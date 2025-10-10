@@ -1,5 +1,6 @@
 from . import errorcheck
 
+
 def get_opcode(instruction):
     return instruction[25:]
 
@@ -39,23 +40,25 @@ def get_immediate(instruction, instruction_type):
         return immediate
 
 
-# Identify instruction type via opcode.
+# identify instruction type via opcode
 def get_instruction_type(opcode):
-    if opcode == "1101111":
-        return "J-Type"
-    elif opcode == "1100011":
-        return "B-Type"
-    elif opcode == "0110011":
-        return "R-Type"
-    elif opcode == "0100011":
-        return "S-Type"
-    elif opcode in ("0110111", "0010111"):
-        return "U-Type"
-    elif opcode in ("0000011", "0010011", "0001111", "1110011"):
-        return "I-Type"
-    else:
+    instruction_reference = {"1101111": "J-type",
+                             "1100011": "B-Type",
+                             "0110011": "R-Type",
+                             "0100011": "S-Type",
+                             "0110111": "U-Type",
+                             "0010111": "U-Type",
+                             "0000011": "I-Type",
+                             "0010011": "I-Type",
+                             "0001111": "I-Type",
+                             "1110011": "I-Type"}
+
+    # exit if invalid opcode
+    if opcode not in instruction_reference:
         extra_lines = "ERROR: Opcode in instruction is not valid."
-        return errorcheck.system_exit(extra_lines)
+        errorcheck.system_exit(extra_lines)
+
+    return instruction_reference[opcode]
 
 
 def decode_instruction(instruction):
@@ -73,11 +76,27 @@ def decode_instruction(instruction):
         decoded_instruction.update({"rs1": get_rs1(instruction),
                                     "rd": get_rd(instruction),
                                     "immediate": get_immediate(instruction, instruction_type)})
-    elif instruction_type == "S-Type" or instruction_type == "B-Type":
+    elif instruction_type == "B-Type":
         decoded_instruction.update({"rs1": get_rs1(instruction),
                                     "rs2": get_rs2(instruction),
                                     "func3": get_func3(instruction),
                                     "immediate": get_immediate(instruction, instruction_type)})
+    elif instruction_type == "S-Type":
+        func3 = get_func3(instruction)
+
+        # slli, srli, srai have s-type opcode but instruction resembles r-type.
+        if func3 in ("001", "101"):
+            decoded_instruction.update({"rs1": get_rs1(instruction),
+                                        "shamt": get_rs2(instruction), # rs2 field is effectively the shift amount for imm. versions of shift instr.
+                                        "rd": get_rd(instruction),
+                                        "func3": func3,
+                                        "func7": get_func7(instruction)})
+        else:
+            decoded_instruction.update({"rs1": get_rs1(instruction),
+                                        "rs2": get_rs2(instruction),
+                                        "func3": func3,
+                                        "immediate": get_immediate(instruction, instruction_type)})
+
     # U-Type or J-Type
     else:
         decoded_instruction.update({"rd": get_rd(instruction),
