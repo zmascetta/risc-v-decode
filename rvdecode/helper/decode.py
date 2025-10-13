@@ -66,7 +66,6 @@ def decode_i_instruction(instruction):
 
 # S-Type
 def decode_s_instruction(instruction):
-    immediate = instruction[0:8] + instruction[20:25]
     func3 = get_func3(instruction)
 
     # slli, srli, srai have s-type opcode but instruction resembles r-type.
@@ -78,6 +77,8 @@ def decode_s_instruction(instruction):
                                "func3": func3,
                                "func7": get_func7(instruction)}
     else:
+        immediate = instruction[0:8] + instruction[20:25]
+
         decoded_instruction = {"rs1": get_rs1(instruction),
                                "rs2": get_rs2(instruction),
                                "func3": func3,
