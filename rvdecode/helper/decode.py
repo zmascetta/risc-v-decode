@@ -26,18 +26,21 @@ def get_func7(instruction):
 
 
 def get_immediate(instruction, instruction_type):
+
     if instruction_type == "I-Type":
-        return instruction[0:12]
+        immediate = instruction[0:12]
     elif instruction_type == "S-Type":
-        return instruction[0:8] + instruction[20:25]
+        immediate = instruction[0:8] + instruction[20:25]
     elif instruction_type == "B-Type":
-        return instruction[0:0] + instruction[24:25] + instruction[1:7] + instruction[20:24] + "0"
+        immediate = instruction[0:0] + instruction[24:25] + instruction[1:7] + instruction[20:24] + "0"
     elif instruction_type == "U-Type":
-        return instruction[0:20].ljust(32,"0")
+        immediate = instruction[0:20].ljust(32,"0")
     else:   #J-Type
         immediate = instruction[0:1] + instruction[12:20] + instruction[11:12] + instruction[1:11] + "0"
         immediate.zfill(32)
-        return immediate
+
+    imm_width = len(immediate)
+    return (immediate, imm_width)
 
 
 # identify instruction type via opcode
@@ -72,15 +75,22 @@ def decode_instruction(instruction):
                                     "rd": get_rd(instruction),
                                     "func3": get_func3(instruction),
                                     "func7": get_func7(instruction)})
-    elif instruction_type == "I-Type":
+        return decoded_instruction
+
+    # get imm. value and width
+    immediate = get_immediate(instruction, instruction_type)
+
+    if instruction_type == "I-Type":
         decoded_instruction.update({"rs1": get_rs1(instruction),
                                     "rd": get_rd(instruction),
-                                    "immediate": get_immediate(instruction, instruction_type)})
+                                    "immediate": immediate[0],
+                                    "imm_width": immediate[1]})
     elif instruction_type == "B-Type":
         decoded_instruction.update({"rs1": get_rs1(instruction),
                                     "rs2": get_rs2(instruction),
                                     "func3": get_func3(instruction),
-                                    "immediate": get_immediate(instruction, instruction_type)})
+                                    "immediate": immediate[0],
+                                    "imm_width": immediate[1]})
     elif instruction_type == "S-Type":
         func3 = get_func3(instruction)
 
@@ -95,11 +105,11 @@ def decode_instruction(instruction):
             decoded_instruction.update({"rs1": get_rs1(instruction),
                                         "rs2": get_rs2(instruction),
                                         "func3": func3,
-                                        "immediate": get_immediate(instruction, instruction_type)})
-
+                                        "immediate": immediate[0],
+                                        "imm_width": immediate[1]})
     # U-Type or J-Type
     else:
         decoded_instruction.update({"rd": get_rd(instruction),
-                                    "immediate": get_immediate(instruction, instruction_type)})
-
+                                    "immediate": immediate[0],
+                                    "imm_width": immediate[1]})
     return decoded_instruction
