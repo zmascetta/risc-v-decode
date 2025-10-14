@@ -1,6 +1,6 @@
 from . import errorcheck
 
-#registers
+# registers
 def get_rs1(instruction):
     return instruction[12:17]
 
@@ -9,6 +9,21 @@ def get_rs2(instruction):
 
 def get_rd(instruction):
     return instruction[20:25]
+
+# immediate
+def get_immediate(instruction, instruction_type, size):
+    if instruction_type == "I-Type":
+        immediate = instruction[0:12]
+    elif instruction_type == "S-Type":
+        immediate = instruction[0:8] + instruction[20:25]
+    elif instruction_type == "B-Type":
+        immediate = instruction[0:0] + instruction[24:25] + instruction[1:7] + instruction[20:24]
+    elif instruction_type == "U-Type":
+        immediate = instruction[0:20]
+    else: #J-Type
+        immediate = instruction[0:1] + instruction[12:20] + instruction[11:12] + instruction[1:11]
+
+    return immediate
 
 # funcs
 def get_func3(instruction):
@@ -42,100 +57,58 @@ def get_instruction_type(opcode):
     return instruction_reference[opcode]
 
 
-# decode functions for each instruction type
-# R-Type
-def decode_r_instruction(instruction):
-    decoded_instruction = {"rs1": get_rs1(instruction),
-                            "rs2": get_rs2(instruction),
-                            "rd": get_rd(instruction),
-                            "func3": get_func3(instruction),
-                            "func7": get_func7(instruction)}
-
-    return decoded_instruction
-
-
-# I-Type
-def decode_i_instruction(instruction):
-    immediate = instruction[0:12]
-
-    decoded_instruction = {"rs1": get_rs1(instruction),
-                           "rd": get_rd(instruction),
-                           "immediate": immediate}
-    return decoded_instruction
-
-
-# S-Type
-def decode_s_instruction(instruction):
-    func3 = get_func3(instruction)
-
-    # slli, srli, srai have s-type opcode but instruction resembles r-type.
-    if func3 in ("001", "101"):
-        decoded_instruction = {"rs1": get_rs1(instruction),
-                               # rs2 field is effectively the shift amount for imm. versions of shift instr.
-                               "shamt": get_rs2(instruction),
-                               "rd": get_rd(instruction),
-                               "func3": func3,
-                               "func7": get_func7(instruction)}
-    else:
-        immediate = instruction[0:8] + instruction[20:25]
-
-        decoded_instruction = {"rs1": get_rs1(instruction),
-                               "rs2": get_rs2(instruction),
-                               "func3": func3,
-                               "immediate": immediate}
-
-    return decoded_instruction
-
-
-# B-Type
-def decode_b_instruction(instruction):
-    immediate = instruction[0:0] + instruction[24:25] + instruction[1:7] + instruction[20:24]
-
-    decoded_instruction = {"rs1": get_rs1(instruction),
-                            "rs2": get_rs2(instruction),
-                            "func3": get_func3(instruction),
-                            "immediate": immediate}
-
-    return decoded_instruction
-
-
-# U-Type
-def decode_u_instruction(instruction):
-    immediate = instruction[0:20]
-
-    decoded_instruction = {"rd": get_rd(instruction),
-                            "immediate": immediate}
-
-    return decoded_instruction
-
-
-# J-Type
-def decode_j_instruction(instruction):
-    immediate = instruction[0:1] + instruction[12:20] + instruction[11:12] + instruction[1:11]
-
-    decoded_instruction = {"rd": get_rd(instruction),
-                           "immediate": immediate}
-
-    return decoded_instruction
-
-
 def decode_instruction(instruction):
+    # checks identify which instruction types need which components
+    # written out in lists to allow for more instruction types to be added
+    rs1_check = ("R-Type", "I-Type", "I-Type (Shift)", "S-Type", "B-Type", )
+    rs2_check = ("R-Type", "S-Type", "B-Type")
+    rd_check = ("R-Type", "I-Type", "I-Type (Shift)", "U-Type", "J-Type")
+    shamt_check = ("I-Type (Shift)")
+    imm_check = ("I-Type", "S-Type", "B-Type", "U-Type", "J-Type")
+    func3_check = ("R-Type", "I-Type", "I-Type (Shift)", "S-Type", "B-Type")
+    func7_check = ("R-Type", "I-Type (Shift)")
+
+    # get opcode and instruction type
     opcode = get_opcode(instruction)
     instruction_type = get_instruction_type(opcode)
 
-    if instruction_type == "R-Type":
-        decoded_instruction = decode_r_instruction(instruction)
-    elif instruction_type == "I-Type":
-        decoded_instruction = decode_i_instruction(instruction)
-    elif instruction_type == "B-Type":
-        decoded_instruction = decode_b_instruction(instruction)
-    elif instruction_type == "S-Type":
-        decoded_instruction = decode_s_instruction(instruction)
-    elif instruction_type == "U-Type":
-        decoded_instruction = decode_u_instruction(instruction)
-    else:   #J-Type
-        decoded_instruction = decode_j_instruction(instruction)
+    # account for different instruction composition for I-Type shift instructions
+    if instruction_type == "I-Type":
+        func3 = get_func3(instruction)
+        if func3 in ("001", "101"):
+            instruction_type = "I-Type (Shift)"
 
-    decoded_instruction.update = {"type": instruction_type, "opcode": opcode}
+    # initialize decoded instruction dict. with opcode and instr. type values
+    decoded_instruction = {"opcode": opcode,
+                           "instruction_type": instruction_type}
+
+    #RS1
+    if instruction_type in rs1_check:
+        decoded_instruction.update = {"rs1": get_rs1(instruction)}
+
+    #RS2
+    if instruction_type in rs2_check:
+        decoded_instruction.update = {"rs2": get_rs2(instruction)}
+
+    #RD
+    if instruction_type in rd_check:
+        decoded_instruction.update = {"rd": get_rd(instruction)}
+
+    #SHAMT
+    # shamt occupies same space as rs2
+    if instruction_type in shamt_check:
+        decoded_instruction.update = {"shamt": get_rs2(instruction)}
+
+    #IMMEDIATE
+    if instruction_type in imm_check:
+        decoded_instruction.update = {"immediate": get_immediate(instruction, instruction_type, 32)}
+
+    #FUNC3
+    if instruction_type in func3_check:
+        decoded_instruction.update = {"func3": get_func3(instruction)}
+
+    #FUNC7
+    if instruction_type in func7_check:
+        decoded_instruction.update = {"func7": get_func7(instruction)}
 
     return decoded_instruction
