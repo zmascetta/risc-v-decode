@@ -1,4 +1,4 @@
-from . import errorcheck
+import errorcheck
 
 ##########
 # DECODE #
@@ -126,7 +126,7 @@ REGISTER_REFERENCE = {"0": {"name": "x0", "alias": "zero", "use": "read-only (0)
 
 def register_conversion(register_value):
     # convert from bin to dec for lookup
-    register_value = int(register_value)
+    register_value = str(int(register_value, base=2))
     register_data = {"value": register_value,
                      "name": REGISTER_REFERENCE[register_value]["name"],
                      "alias": REGISTER_REFERENCE[register_value]["alias"],
@@ -157,12 +157,16 @@ def immediate_conversion(immediate, size):
                         "hex": hex(immediate_dec)}
     return immediate_data
 
+
+##########
+# DECODE #
+##########
 # this function will create a (mostly) 2D dictionary.
 # each component of the instruction will have a corresponding dictionary that contains
 # the detailed information for that component. there is also a "general" dict. for general info.
 # the final entry in the dict. is "assembly", which holds a string value of the assembly code.
 def decode_instruction(instruction):
-    # checks identify which instruction types need which components
+    # these checks identify which instruction types need which components
     # written out in lists to allow for more instruction types to be added
     rs1_check = ("R-Type", "I-Type", "I-Type (Shift)", "S-Type", "B-Type")
     rs2_check = ("R-Type", "S-Type", "B-Type")
@@ -190,8 +194,8 @@ def decode_instruction(instruction):
                     "instruction_type": instruction_type}
 
     # each of the components follows the same flow:
-    # a "decode" function (get_xxx) takes the binary instruction and extracts the field from it.
-    # this binary value is then passed to a "conversion" function (xxx_conversion) that converts it/provides more info
+    # a "decode" function (get_xxx) takes the full binary instruction and extracts the field from it.
+    # this binary value is then passed to a "conversion" function (xxx_conversion) that converts it/provides more info.
     # the conversion functions returns a dictionary, which is added to the decoded_instruction dict.
     #RS1
     if instruction_type in rs1_check:
@@ -207,23 +211,24 @@ def decode_instruction(instruction):
 
     #SHAMT
     # shamt occupies same space as rs2
-    if instruction_type in shamt_check:
-        decoded_instruction.update({"shamd_data": register_conversion(get_rs2(instruction))})
+    if instruction_type == shamt_check:
+        decoded_instruction.update({"shamt_data": register_conversion(get_rs2(instruction))})
 
     #IMMEDIATE
     if instruction_type in imm_check:
         immediate_data = get_immediate(instruction, instruction_type, 32)
-        immediate_data.update = immediate_conversion(immediate_data["final_value"],32)
+        immediate_data.update(immediate_conversion(immediate_data["final_value"],32))
+        decoded_instruction.update({"immediate_data": immediate_data})
 
     # func3 and func7 do not need conversion
     # their values are extracted then added to the general_data dict.
     #FUNC3
     if instruction_type in func3_check:
-        general_data.update = {"func3": get_func3(instruction)}
+        general_data.update({"func3": get_func3(instruction)})
 
     #FUNC7
     if instruction_type in func7_check:
-        general_data.update = {"func7": get_func7(instruction)}
+        general_data.update({"func7": get_func7(instruction)})
 
     # add the final "general" dict. to decoded instr. dict
     decoded_instruction.update({"general": general_data})
