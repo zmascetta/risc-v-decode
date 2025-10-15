@@ -1,28 +1,28 @@
 import sys, re
 
 
-# Check to make sure only 1 arg has been entered.
+# check to make sure only 1 arg has been entered
 def argument_check(arguments):
     if len(arguments) != 2:
         system_exit()
 
 
-# Check to ensure that either a 32-bit bin instr or 8-bit hex instr has been entered.
-# Will return binary instruction.
+# check to ensure that either a 32-bit bin instr or 8-bit hex instr has been entered
+# will return binary instruction.
 def instruction_check(instruction):
-    # Clear any spaces if passed in with quotes
+    # clear any spaces if passed in with quotes
     instruction = instruction.replace(' ', '')
-    # Check for 32-bit binary instruction.
+    # check for 32-bit binary instruction
     binary_check = re.search(
         r"^[0,1]{32}$",
         instruction)
 
-    # Check for 8-bit hex instruction.
+    # check for 8-bit hex instruction
     hex_check = re.search(
         r"^[0-9a-fA-F]{8}$",
         instruction)
 
-    # Return binary instruction or end program if both checks have failed.
+    # return binary instruction or end program if both checks have failed
     if binary_check is not None:
         return instruction
     elif hex_check is not None:
@@ -32,8 +32,8 @@ def instruction_check(instruction):
     else:
         system_exit()
 
-# Function for exiting system.
-# Accepts additional lines if necessary.
+# function for exiting system
+# accepts additional lines if necessary
 def system_exit(extra_lines=None):
     error_message = "Usage:\n" \
                     "\t\033[1mrvdecode\033[0m instruction\n" \
