@@ -1,8 +1,21 @@
-import helper.decode as decode, helper.errorcheck as errorcheck, helper.output as output
+import sys
+from helper import decode as decode, errorcheck as errorcheck, output as output
 
 
 def main():
-    pass
+
+    # assign instruction
+    instruction = sys.argv[1]
+
+    # perform error checks
+    errorcheck.argument_check(sys.argv)
+    errorcheck.instruction_check(instruction)
+
+    # perform instruction decode
+    decoded_instruction = decode.decode_instruction(instruction)
+
+    # print output
+    output.output_instruction(decoded_instruction)
 
 
 if __name__ == "__main__":

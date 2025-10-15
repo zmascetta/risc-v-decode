@@ -1,4 +1,4 @@
-import errorcheck
+from . import errorcheck
 
 ##########
 # DECODE #
@@ -126,11 +126,12 @@ REGISTER_REFERENCE = {"0": {"name": "x0", "alias": "zero", "use": "read-only (0)
 
 def register_conversion(register_value):
     # convert from bin to dec for lookup
-    register_value = str(int(register_value, base=2))
-    register_data = {"value": register_value,
-                     "name": REGISTER_REFERENCE[register_value]["name"],
-                     "alias": REGISTER_REFERENCE[register_value]["alias"],
-                     "use": REGISTER_REFERENCE[register_value]["use"]
+    decimal_value = str(int(register_value, base=2))
+    register_data = {"binary_value": register_value,
+                        "decimal_value": decimal_value,
+                        "name": REGISTER_REFERENCE[decimal_value]["name"],
+                        "alias": REGISTER_REFERENCE[decimal_value]["alias"],
+                        "use": REGISTER_REFERENCE[decimal_value]["use"]
                      }
     return register_data
 
@@ -187,11 +188,24 @@ def decode_instruction(instruction):
             instruction_type = "I-Type (Shift)"
 
     # initialize the decoded instruction dict.
-    decoded_instruction = {}
+    decoded_instruction = {"instruction": {"value": instruction}}
 
     # initialize the "general" dict. with opcode and instr. type values
     general_data = {"opcode": opcode,
                     "instruction_type": instruction_type}
+
+    # func3 and func7 do not need conversion
+    # their values are extracted then added to the general_data dict.
+    #FUNC3
+    if instruction_type in func3_check:
+        general_data.update({"func3": get_func3(instruction)})
+
+    #FUNC7
+    if instruction_type in func7_check:
+        general_data.update({"func7": get_func7(instruction)})
+
+    # add the final "general" dict. to decoded instr. dict
+    decoded_instruction.update({"general_data": general_data})
 
     # each of the components follows the same flow:
     # a "decode" function (get_xxx) takes the full binary instruction and extracts the field from it.
@@ -219,18 +233,5 @@ def decode_instruction(instruction):
         immediate_data = get_immediate(instruction, instruction_type, 32)
         immediate_data.update(immediate_conversion(immediate_data["final_value"],32))
         decoded_instruction.update({"immediate_data": immediate_data})
-
-    # func3 and func7 do not need conversion
-    # their values are extracted then added to the general_data dict.
-    #FUNC3
-    if instruction_type in func3_check:
-        general_data.update({"func3": get_func3(instruction)})
-
-    #FUNC7
-    if instruction_type in func7_check:
-        general_data.update({"func7": get_func7(instruction)})
-
-    # add the final "general" dict. to decoded instr. dict
-    decoded_instruction.update({"general": general_data})
 
     return decoded_instruction
