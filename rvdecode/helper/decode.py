@@ -287,7 +287,7 @@ def decode_instruction(instruction):
             instruction_type = "I-Type (Shift)"
 
     # initialize the decoded instruction dict.
-    decoded_instruction = {"instruction": {"value": instruction}}
+    decoded_instruction = {"instruction": instruction}
 
     # initialize the "general" dict. with opcode and instr. type values
     general_data = {"opcode": opcode,
