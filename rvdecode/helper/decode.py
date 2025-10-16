@@ -154,10 +154,109 @@ def immediate_conversion(immediate, size):
     else:
         immediate_dec = int(immediate, base=2)
 
-    immediate_data = {"dec": immediate_dec,
-                        "hex": hex(immediate_dec)}
+    immediate_data = {"decimal_value": immediate_dec,
+                        "hex_value": hex(immediate_dec)}
     return immediate_data
 
+
+def shamt_conversion(shamt):
+    shamt_dec = int(shamt, base=2)
+
+    shamt_data = {"binary_value": "shamt",
+                    "decimal_value": shamt_dec}
+
+    return shamt_data
+
+
+############
+# ASSEMBLY #
+############
+# for looking up assembly instruction
+
+ASSEMBLY_LOOKUP = {"0110111": "lui",
+                   "0010111": "auipc",
+                   "1101111": "jal",
+                   "1100011000": "beq",
+                   "1100011001": "bne",
+                   "1100011100": "blt",
+                   "1100011101": "bge",
+                   "1100011110": "bltu",
+                   "1100011111": "bgeu",
+                   "0100011000": "sb",
+                   "0100011001": "sh",
+                   "0100011010": "sw",
+                   "01100110000000000": "add",
+                   "01100110000100000": "sub",
+                   "01100110010000000": "sll",
+                   "01100110100000000": "slt",
+                   "01100110110000000": "sltu",
+                   "01100111000000000": "xor",
+                   "01100111010000000": "srl",
+                   "01100111010100000": "sra",
+                   "01100111100000000": "or",
+                   "01100111110000000": "and",
+                   "1100111000": "jalr",
+                   "0000011000": "lb",
+                   "0000011001": "lh",
+                   "0000011010": "lw",
+                   "0000011100": "lbu",
+                   "0000011101": "lhu",
+                   "0010011000": "addi",
+                   "0010011010": "slti",
+                   "0010011011": "sltiu",
+                   "0010011100": "xori",
+                   "0010011110": "ori",
+                   "0010011111": "andi",
+                   "00100110010000000": "slli",
+                   "00100111010000000": "srli",
+                   "00100111010100000": "srai"}
+
+def get_assembly(decoded_instruction):
+    # lookup instruction with combo of opcode + func3 + func7 (if available)
+    assembly_lookup = decoded_instruction["general_data"]["opcode"]
+
+    if "func3" in decoded_instruction["general_data"].keys():
+        assembly_lookup += decoded_instruction["general_data"]["func3"]
+
+    if "func7" in decoded_instruction["general_data"].keys():
+        assembly_lookup += decoded_instruction["general_data"]["func7"]
+
+    # store in a list due to formatting that needs to be applied
+    assembly_instruction_list = [ASSEMBLY_LOOKUP[assembly_lookup]]
+
+    #rd
+    if "rd_data" in decoded_instruction.keys():
+        assembly_instruction_list.append(decoded_instruction["rd_data"]["name"])
+
+    #rs1
+    if "rs1_data" in decoded_instruction.keys():
+        assembly_instruction_list.append(decoded_instruction["rs1_data"]["name"])
+
+    #rs2
+    if "rs2_data" in decoded_instruction.keys():
+        assembly_instruction_list.append(decoded_instruction["rs2_data"]["name"])
+
+    #shamt
+    if "shamt_data" in decoded_instruction.keys():
+        assembly_instruction_list.append(str(decoded_instruction["shamt_data"]["decimal_value"]))
+
+    #immediate
+    if "immediate_data" in decoded_instruction.keys():
+        assembly_instruction_list.append(str(decoded_instruction["immediate_data"]["decimal_value"]))
+
+    # add formatting
+    # do not add a comma if component is the first or the last component
+    length = len(assembly_instruction_list)
+    x = 0
+    assembly_instruction = ""
+    while x < length:
+        if x > 0 and x < length - 1:
+            assembly_instruction += assembly_instruction_list[x] + ", "
+        else:
+            assembly_instruction += assembly_instruction_list[x] + " "
+        x += 1
+
+    return assembly_instruction
 
 ##########
 # DECODE #
@@ -226,12 +325,15 @@ def decode_instruction(instruction):
     #SHAMT
     # shamt occupies same space as rs2
     if instruction_type == shamt_check:
-        decoded_instruction.update({"shamt_data": register_conversion(get_rs2(instruction))})
+        decoded_instruction.update({"shamt_data": shamt_conversion(get_rs2(instruction))})
 
     #IMMEDIATE
     if instruction_type in imm_check:
         immediate_data = get_immediate(instruction, instruction_type, 32)
         immediate_data.update(immediate_conversion(immediate_data["final_value"],32))
         decoded_instruction.update({"immediate_data": immediate_data})
+
+    #ASSEMBLY
+    decoded_instruction.update({"assembly": get_assembly(decoded_instruction)})
 
     return decoded_instruction
