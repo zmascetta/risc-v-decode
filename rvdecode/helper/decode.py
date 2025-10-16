@@ -222,7 +222,13 @@ def get_assembly(decoded_instruction):
         assembly_lookup += decoded_instruction["general_data"]["func7"]
 
     # store in a list due to formatting that needs to be applied
-    assembly_instruction_list = [ASSEMBLY_LOOKUP[assembly_lookup]]
+    try:
+        assembly_instruction_list = [ASSEMBLY_LOOKUP[assembly_lookup]]
+    except KeyError:
+        error_message = "Invalid func3/func7. Your instruction is not valid."
+        errorcheck.system_exit(error_message)
+    else:
+        assembly_instruction_list = [ASSEMBLY_LOOKUP[assembly_lookup]]
 
     #rd
     if "rd_data" in decoded_instruction.keys():
@@ -267,7 +273,7 @@ def get_assembly(decoded_instruction):
 # the final entry in the dict. is "assembly", which holds a string value of the assembly code.
 def decode_instruction(instruction):
     # these checks identify which instruction types need which components
-    # written out in lists to allow for more instruction types to be added
+    # written out in tuples to allow for more instruction types to be added
     rs1_check = ("R-Type", "I-Type", "I-Type (Shift)", "S-Type", "B-Type")
     rs2_check = ("R-Type", "S-Type", "B-Type")
     rd_check = ("R-Type", "I-Type", "I-Type (Shift)", "U-Type", "J-Type")
