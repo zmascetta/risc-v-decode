@@ -73,8 +73,6 @@ def get_instruction_type(opcode):
                              "0010111": "U-Type",
                              "0000011": "I-Type",
                              "0010011": "I-Type",
-                             "0001111": "I-Type",
-                             "1110011": "I-Type",
                              "0001111": "error",
                              "1110011": "error"}
 
