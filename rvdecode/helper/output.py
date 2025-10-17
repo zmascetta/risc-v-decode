@@ -13,9 +13,11 @@ def format_label(label):
     return label
 
 
-def print_instruction(instruction):
-    print("INSTRUCTION")
-    print(instruction+ "\n")
+def print_instruction(instruction_data):
+    header = "INSTRUCTION\n"
+    instruction = instruction_data["instruction"] + "\n"
+    instruction_info = format_label(instruction_data["full_name"]) + " (" + instruction_data["short_name"] + ")\n"
+    print(header + instruction + instruction_info)
 
 
 def print_data(data):
@@ -31,15 +33,20 @@ def print_data_header(data):
 
 def output_instruction(decoded_instruction):
 
-    # instruction and assembly are both single strings (as opposed to dicts.)
-    # they should not follow the print loop for the other data and should be popped
-    # the decoded instruction dict.
-    # pop instruction and print it, then pop assembly value to print after loop
-    instruction_value = decoded_instruction.pop("instruction")
-    print_instruction(instruction_value)
+    # get instruction set from instruction_set dict and add it to the general_data dict.
+    updated_general_data = {"instruction_set": decoded_instruction["instruction_data"]["instruction_set"]}
+    updated_general_data.update(decoded_instruction["general_data"])
+    decoded_instruction["general_data"] = updated_general_data
 
+    # pop instruction data from decoded_instruction.
+    # instruction_data has specific printing needs and shouldn't be printed using the general loop.
+    instruction_data = decoded_instruction.pop("instruction_data")
+    print_instruction(instruction_data)
+
+    # pop assembly - it is just a string and doesn't ned the general oop either.
     assembly_value = decoded_instruction.pop("assembly")
 
+    # loop for printing all the data
     for data in decoded_instruction:
         print_data_header(data)
         print_data(decoded_instruction[data])
