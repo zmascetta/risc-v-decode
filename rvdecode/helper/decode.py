@@ -74,7 +74,9 @@ def get_instruction_type(opcode):
                              "0000011": "I-Type",
                              "0010011": "I-Type",
                              "0001111": "I-Type",
-                             "1110011": "I-Type"}
+                             "1110011": "I-Type",
+                             "0001111": "error",
+                             "1110011": "error"}
 
     # exit if invalid opcode
     try:
@@ -82,8 +84,12 @@ def get_instruction_type(opcode):
     except KeyError:
         extra_lines = "ERROR: Opcode in instruction is not valid."
         errorcheck.system_exit(extra_lines)
-
-    return instruction_type
+    else:
+        if instruction_type == "error":
+            extra_lines = "ERROR: RV-Decode does not support fence, ecall, ebreak, or CSR instructions."
+            errorcheck.system_exit(extra_lines)
+        else:
+            return instruction_type
 
 
 ##############
