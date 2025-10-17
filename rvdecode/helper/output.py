@@ -13,11 +13,27 @@ def format_label(label):
     return label
 
 
-def print_instruction(instruction_data):
-    header = "INSTRUCTION\n"
-    instruction = instruction_data["instruction"] + "\n"
-    instruction_info = format_label(instruction_data["full_name"]) + " (" + instruction_data["short_name"] + ")\n"
-    print(header + instruction + instruction_info)
+def print_instruction(instruction_data, instruction_type):
+    header = format_label(instruction_data["full_name"]) + " (" + instruction_data["short_name"] + ")"
+    instruction = instruction_data["instruction"]
+    print(header + "\n" + instruction + "\n")
+
+
+
+    if instruction_type == "R-Type":
+        instruction = instruction[0:7] + " " + instruction[7:12] + " " + instruction[12:17] + " " + instruction[17:20] + " " + instruction[20:25] + " " + instruction[25:]
+        label = "f7----| rs2-| rs1-| f3| rd--| opcode|\n"
+    elif instruction_type == "I-Type":
+        instruction = instruction[0:12] + " " + instruction[12:17] + " " + instruction[17:20] + " " + instruction[20:25] + " " + instruction[25:]
+        label = "imm--------| rs1-| f3| rd--| opcode|\n"
+    elif instruction_type == "S-Type" or instruction_type == "B-Type":
+        instruction = instruction[0:7] + " " + instruction[7:12] + " " + instruction[12:17] + " " + instruction[17:20] + " " + instruction[20:25] + " " + instruction[25:]
+        label = "imm---| rs2-| rs1-| f3| imm-| opcode|"
+    else:
+        instruction = instruction[0:20] + " " + instruction[20:25] + " " + instruction[25:]
+        label = "imm----------------| rd--| opcode|"
+
+    print(label + instruction + "\n")
 
 
 def print_data(data):
@@ -41,7 +57,7 @@ def output_instruction(decoded_instruction):
     # pop instruction data from decoded_instruction.
     # instruction_data has specific printing needs and shouldn't be printed using the general loop.
     instruction_data = decoded_instruction.pop("instruction_data")
-    print_instruction(instruction_data)
+    print_instruction(instruction_data, updated_general_data["instruction_type"])
 
     # pop assembly - it is just a string and doesn't ned the general oop either.
     assembly_value = decoded_instruction.pop("assembly")
