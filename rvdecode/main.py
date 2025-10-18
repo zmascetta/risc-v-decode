@@ -5,7 +5,7 @@ from helper import decode as decode, errorcheck as errorcheck, output as output
 def main():
 
     # assign instruction
-    instruction = sys.argv[1]
+    instruction = sys.argv[1].replace(" ","")
 
     # perform error checks
     errorcheck.argument_check(sys.argv)

@@ -12,28 +12,48 @@ def format_label(label):
     label = label.title()
     return label
 
+# function to print a spaced instruction
+# takes in the instruction and the "spacing_list"
+# spacing_list = where to insert the spaces, or how many digits to group together
+def print_spaced_instruction(instruction, spacing_list):
+    insert_space = spacing_list[0] - 1
+    spacing_total = len(spacing_list) - 1
+
+    x = 0
+    y = 1
+    length = len(instruction)
+    while x < length:
+        if x == insert_space:
+            print(instruction[x] + " ", end="")
+            if y < spacing_total:
+                insert_space = insert_space + spacing_list[y]
+            y += 1
+            x += 1
+        else:
+            print(instruction[x], end="")
+            x += 1
+    print("\n")
 
 def print_instruction(instruction_data, instruction_type):
     header = format_label(instruction_data["full_name"]) + " (" + instruction_data["short_name"] + ")"
     instruction = instruction_data["instruction"]
     print(header + "\n" + instruction + "\n")
 
-
-
     if instruction_type == "R-Type":
-        instruction = instruction[0:7] + " " + instruction[7:12] + " " + instruction[12:17] + " " + instruction[17:20] + " " + instruction[20:25] + " " + instruction[25:]
+        spacing_list = (7, 5, 5, 3, 5, 7)
         label = "f7----| rs2-| rs1-| f3| rd--| opcode|\n"
     elif instruction_type == "I-Type":
-        instruction = instruction[0:12] + " " + instruction[12:17] + " " + instruction[17:20] + " " + instruction[20:25] + " " + instruction[25:]
+        spacing_list = (12, 5, 3, 5, 7)
         label = "imm--------| rs1-| f3| rd--| opcode|\n"
     elif instruction_type == "S-Type" or instruction_type == "B-Type":
-        instruction = instruction[0:7] + " " + instruction[7:12] + " " + instruction[12:17] + " " + instruction[17:20] + " " + instruction[20:25] + " " + instruction[25:]
+        spacing_list = (7, 5, 5, 3, 5, 7)
         label = "imm---| rs2-| rs1-| f3| imm-| opcode|"
     else:
-        instruction = instruction[0:20] + " " + instruction[20:25] + " " + instruction[25:]
+        spacing_list = (20, 5, 7)
         label = "imm----------------| rd--| opcode|"
 
-    print(label + instruction + "\n")
+    print(label)
+    print_spaced_instruction(instruction, spacing_list)
 
 
 def print_data(data):
