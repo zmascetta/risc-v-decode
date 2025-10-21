@@ -246,15 +246,15 @@ def make_assembly_code(decoded_instruction):
     assembly_instruction_list = [decoded_instruction["instruction_data"]["short_name"]]
     #rd
     if "rd_data" in decoded_instruction.keys():
-        assembly_instruction_list.append(decoded_instruction["rd_data"]["name"])
+        assembly_instruction_list.append(decoded_instruction["rd_data"]["alias"])
 
     #rs1
     if "rs1_data" in decoded_instruction.keys():
-        assembly_instruction_list.append(decoded_instruction["rs1_data"]["name"])
+        assembly_instruction_list.append(decoded_instruction["rs1_data"]["alias"])
 
     #rs2
     if "rs2_data" in decoded_instruction.keys():
-        assembly_instruction_list.append(decoded_instruction["rs2_data"]["name"])
+        assembly_instruction_list.append(decoded_instruction["rs2_data"]["alias"])
 
     #shamt
     if "shamt_data" in decoded_instruction.keys():
