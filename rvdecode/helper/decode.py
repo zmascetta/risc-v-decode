@@ -65,7 +65,7 @@ def get_opcode(instruction):
 
 # identify instruction type via opcode
 def get_instruction_type(opcode):
-    instruction_reference = {"1101111": "J-type",
+    instruction_reference = {"1101111": "J-Type",
                              "1100011": "B-Type",
                              "0110011": "R-Type",
                              "0100011": "S-Type",
