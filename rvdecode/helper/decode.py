@@ -13,7 +13,12 @@ def get_rs2(instruction):
     return instruction[7:12]
 
 def get_rd(instruction):
-    return instruction[20:25]
+    rd = instruction[20:25]
+    if rd == "00000":
+        extra_lines = "ERROR: Attempt to write to x0."
+        errorcheck.system_exit(extra_lines)
+
+    return rd
 
 # immediate
 # this function produces up to 3 values:
