@@ -13,7 +13,12 @@ def get_rs2(instruction):
     return instruction[7:12]
 
 def get_rd(instruction):
-    return instruction[20:25]
+    rd = instruction[20:25]
+    if rd == "00000":
+        extra_lines = "ERROR: Attempt to write to x0."
+        errorcheck.system_exit(extra_lines)
+
+    return rd
 
 # immediate
 # this function produces up to 3 values:
@@ -65,7 +70,7 @@ def get_opcode(instruction):
 
 # identify instruction type via opcode
 def get_instruction_type(opcode):
-    instruction_reference = {"1101111": "J-type",
+    instruction_reference = {"1101111": "J-Type",
                              "1100011": "B-Type",
                              "0110011": "R-Type",
                              "0100011": "S-Type",
@@ -250,11 +255,17 @@ def make_assembly_code(decoded_instruction):
 
     #rs1
     if "rs1_data" in decoded_instruction.keys():
-        assembly_instruction_list.append(decoded_instruction["rs1_data"]["alias"])
+        if decoded_instruction["rs1_data"]["decimal_value"] == 0:
+            assembly_instruction_list.append(decoded_instruction["rs1_data"]["name"])
+        else:
+            assembly_instruction_list.append(decoded_instruction["rs1_data"]["alias"])
 
     #rs2
     if "rs2_data" in decoded_instruction.keys():
-        assembly_instruction_list.append(decoded_instruction["rs2_data"]["alias"])
+        if decoded_instruction["rs2_data"]["decimal_value"] == 0:
+            assembly_instruction_list.append(decoded_instruction["rs2_data"]["name"])
+        else:
+            assembly_instruction_list.append(decoded_instruction["rs2_data"]["alias"])
 
     #shamt
     if "shamt_data" in decoded_instruction.keys():

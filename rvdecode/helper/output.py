@@ -52,7 +52,7 @@ def print_instruction(instruction_data, instruction_type):
         spacing_list = (20, 5, 7)
         label = "imm----------------| rd--| opcode|"
 
-    print(label)
+    print(label, end="")
     print_spaced_instruction(instruction, spacing_list)
 
 
