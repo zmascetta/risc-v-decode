@@ -62,7 +62,7 @@ def get_func3(instruction):
     return instruction[17:20]
 
 def get_func7(instruction):
-    return instruction[0:8]
+    return instruction[0:7]
 
 # opcode
 def get_opcode(instruction):
@@ -163,12 +163,12 @@ def immediate_conversion(immediate, instruction, size):
     # if immediate is unsigned, do not peform two's comp.
     unsigned_list = ["sltiu", "sltu", "bltu", "bgeu", "lbu", "lhu"]
     if immediate[0:1] == "1" and instruction not in unsigned_list:
-        immediate_dec = twos_complement(immediate, len(immediate))
+        immediate_decimal = twos_complement(immediate, len(immediate))
     else:
-        immediate_dec = int(immediate, base=2)
+        immediate_decimal = int(immediate, base=2)
 
-    immediate_data = {"decimal_value": immediate_dec,
-                        "hex_value": hex(immediate_dec)}
+    immediate_data = {"decimal_value": immediate_decimal,
+                        "hex_value": hex(immediate_decimal)}
     return immediate_data
 
 def shamt_conversion(shamt):

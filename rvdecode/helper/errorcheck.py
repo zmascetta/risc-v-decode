@@ -39,5 +39,5 @@ def system_exit(extra_lines=None):
                     "\t\033[1mrvdecode\033[0m instruction\n" \
                     "\tInstruction must be a valid 32-bit binary or 8-bit hex instruction."
     if extra_lines is not None:
-        error_message += "\n" + extra_lines
+        error_message += "\n\n\t" + extra_lines
     sys.exit(error_message)
