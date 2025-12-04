@@ -27,22 +27,7 @@ ASSEMBLY_LOOKUP = {"0110111": {"short_name":  "lui", "full_name": "load upper im
                     "01100111010000000": {"short_name":  "srl", "full_name": "shift right logical", "instruction_set": "RV32I, RV64I"},
                     "01100111010100000": {"short_name":  "sra", "full_name": "shift right arithmetic", "instruction_set": "RV32I, RV64I"},
                     "01100111100000000": {"short_name":  "or", "full_name": "OR", "instruction_set": "RV32I, RV64I"},
-                    "01100111110000000": {"short_name":  "and", "full_name": "AND", "instruction_set": "RV32I, RV64I"},
-                    "1100111000": {"short_name":  "jalr", "full_name": "jump and link register", "instruction_set": "RV32I, RV64I"},
-                    "0000011000": {"short_name":  "lb", "full_name": "load byte", "instruction_set": "RV32I, RV64I"},
-                    "0000011001": {"short_name":  "lh", "full_name": "load halfword", "instruction_set": "RV32I, RV64I"},
-                    "0000011010": {"short_name":  "lw", "full_name": "load word", "instruction_set": "RV32I, RV64I"},
-                    "0000011100": {"short_name":  "lbu", "full_name": "load byte, unsigned", "instruction_set": "RV32I, RV64I"},
-                    "0000011101": {"short_name":  "lhu", "full_name": "load halfword, unsigned", "instruction_set": "RV32I, RV64I"},
-                    "0010011000": {"short_name":  "addi", "full_name": "add immediate", "instruction_set": "RV32I, RV64I"},
-                    "0010011010": {"short_name":  "slti", "full_name": "set if less than immediate", "instruction_set": "RV32I, RV64I"},
-                    "0010011011": {"short_name":  "sltiu", "full_name": "set if less than immediate, unsigned", "instruction_set": "RV32I, RV64I"},
-                    "0010011100": {"short_name":  "xori", "full_name": "exclusive-OR immediate", "instruction_set": "RV32I, RV64I"},
-                    "0010011110": {"short_name":  "ori", "full_name": "OR immediate", "instruction_set": "RV32I, RV64I"},
-                    "0010011111": {"short_name":  "andi", "full_name": "AND immediate", "instruction_set": "RV32I, RV64I"},
-                    "00100110010000000": {"short_name":  "slli", "full_name": "shift left logical immediate", "instruction_set": "RV32I, RV64I"},
-                    "00100111010000000": {"short_name":  "srli", "full_name": "shift right logical immediate", "instruction_set": "RV32I, RV64I"},
-                    "00100111010100000": {"short_name":  "srai", "full_name": "shift right arithmetic immediate", "instruction_set": "RV32I, RV64I"}}
+                    "01100111110000000": {"short_name":  "and", "full_name": "AND", "instruction_set": "RV32I, RV64I"}}
 
 def get_assembly_data(decoded_instruction):
     assembly_data = {"instruction": decoded_instruction["instruction_data"]["instruction"]}

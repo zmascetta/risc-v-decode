@@ -159,12 +159,24 @@ def twos_complement(immediate, size):
 
      return value
 
-def immediate_conversion(immediate, instruction, size):
+def unsigned_immediate_conversion(immediate):
 
-    # if immediate is unsigned, do not peform two's comp.
-    unsigned_list = ["sltiu", "sltu", "bltu", "bgeu", "lbu", "lhu"]
-    if immediate[0:1] == "1" and instruction not in unsigned_list:
-        immediate_decimal = twos_complement(immediate, len(immediate))
+    immediate_decimal = int(immediate, base=2)
+    immediate_data = {"decimal_value": immediate_decimal,
+                        "hex_value": hex(immediate_decimal)}
+    return immediate_data
+
+def signed_immediate_conversion(immediate, size=32):
+    # perform twos complement if negative
+    if immediate[0:1] == "1":
+        # get mask with 2^k - 1
+        mask = (2 ** size) - 1
+        # bitwise xor
+        value = mask ^ immediate
+        # add 1
+        value += 1
+        # make value negative
+        value = -value
     else:
         immediate_decimal = int(immediate, base=2)
 
@@ -179,7 +191,6 @@ def shamt_conversion(shamt):
                     "decimal_value": shamt_dec}
 
     return shamt_data
-
 
 ##########
 # DECODE #
