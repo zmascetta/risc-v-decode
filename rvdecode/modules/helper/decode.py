@@ -1,4 +1,5 @@
-from . import errorcheck, assembly
+from rvdecode.modules.helper import assembly, errorcheck
+
 
 ##########
 # DECODE #

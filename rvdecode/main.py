@@ -1,5 +1,5 @@
 import sys
-from helper import decode as decode, errorcheck as errorcheck, output as output
+from rvdecode.modules import decode as decode, errorcheck as errorcheck, output as output
 
 
 def main():
