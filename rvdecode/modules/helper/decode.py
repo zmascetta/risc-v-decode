@@ -28,11 +28,7 @@ def get_rd(instruction):
 #    (b or j type), this shifts the bits into the actual order
 # 3. "final_value" - this is the final, full-width binary value, including zero shifts or appended bits
 def get_immediate(instruction, instruction_type, size):
-    if instruction_type == "I-Type":
-        immediate_data = {"value_in_instruction": instruction[0:12],
-                            "final_value": instruction[0:12]}
-
-    elif instruction_type == "S-Type":
+    if instruction_type == "S-Type":
         immediate_data = {"value_in_instruction": instruction[0:8] + " " + instruction[20:25],
                             "final_value": instruction[0:8] + instruction[20:25]}
 
