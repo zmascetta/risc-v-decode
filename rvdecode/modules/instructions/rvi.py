@@ -156,7 +156,7 @@ def i_instruction(instruction, opcode, func3):
 '''
 I-Instruction (Shift):
 Separate i-instruction function to handle the shift immediate instructions.
-Components: Opcode, Func3, Func7, RS1, RD, SHAMT (6-digit, but SHAMT[5] always equals 0)
+Components: Opcode, Func3, Func7, RS1, RD, SHAMT (6-digit)
 '''
 def i_instruction_shift(instruction, opcode, func3):
 
@@ -191,7 +191,12 @@ def i_instruction_shift(instruction, opcode, func3):
     rd_info = decode.register_conversion(decode.get_rd(instruction))
 
     # Create shamt dict.
+    # SHAMT[5] always equals 0
     shamt = instruction[8:15]
+    if shamt[0] == 1:
+        error_message = "Invalid shift amount. Your instruction is not valid."
+        errorcheck.system_exit(error_message)
+
     shamt_info = {"binary_value": shamt}
     shamt_info.update(decode.unsigned_immediate_conversion(shamt))
 
@@ -207,6 +212,55 @@ def i_instruction_shift(instruction, opcode, func3):
                            "rs1_info": rs1_info,
                            "rd_info": rd_info,
                            "shamt_info": shamt_info,
+                           "assembly_info": assembly_info}
+
+    return decoded_instruction
+
+
+'''
+S-Instruction:
+Components: Opcode, Func3, RS1, RS2
+'''
+def s_instruction(instruction, opcode, func3):
+    # Create header dict.
+    header_info = create_header_info(instruction, "s_instruction")
+
+    instruction_lookup_value = func3
+    instruction_lookup = {
+        "000": {"short_name": "sb", "full_name": "store byte"},
+        "001": {"short_name": "sh", "full_name": "store halfword"},
+        "010": {"short_name": "sw", "full_name": "store word"}}
+    try:
+        instruction_lookup[instruction_lookup_value]
+    except KeyError:
+        error_message = "Invalid func3. Your instruction is not valid."
+        errorcheck.system_exit(error_message)
+    else:
+        header_info.update(instruction_lookup[instruction_lookup_value])
+
+    # Create general info dict.
+    general_info = {"instruction_type": "S-Type",
+                    "instruction_set": INSTRUCTION_SET,
+                    "opcode": opcode,
+                    "func3": func3}
+
+    # Create rs1 dict.
+    rs1_info = decode.register_conversion(decode.get_rs1(instruction))
+
+    # Create rs2 dict.
+    rs2_info = decode.register_conversion(decode.get_rs2(instruction))
+
+    # Create assembly info dict
+    assembly_info = {"name": header_info["short_name"],
+                     "rs1": rs1_info["alias"],
+                     "rs2": rs2_info["alias"],
+                     }
+
+    # Add all dicts to decoded instruction dict
+    decoded_instruction = {"header_info": header_info,
+                           "general_info": general_info,
+                           "rs1_info": rs1_info,
+                           "rs2_info": rs2_info,
                            "assembly_info": assembly_info}
 
     return decoded_instruction

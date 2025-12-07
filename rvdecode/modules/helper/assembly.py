@@ -15,9 +15,6 @@ ASSEMBLY_LOOKUP = {"0110111": {"short_name":  "lui", "full_name": "load upper im
                     "1100011101": {"short_name":  "bge", "full_name": "branch if greater than or equal"},
                     "1100011110": {"short_name":  "bltu", "full_name": "branch if less than, unsigned"},
                     "1100011111": {"short_name":  "bgeu", "full_name": "branch if greater than or equal, unsigned"},
-                    "0100011000": {"short_name":  "sb", "full_name": "store byte"},
-                    "0100011001": {"short_name":  "sh", "full_name": "store halfword"},
-                    "0100011010": {"short_name":  "sw", "full_name": "store word"},
 }
 
 def get_assembly_data(decoded_instruction):
