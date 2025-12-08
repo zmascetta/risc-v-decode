@@ -39,44 +39,27 @@ def get_assembly_data(decoded_instruction):
     return assembly_data
 
 
-def make_assembly_code(decoded_instruction):
-    assembly_instruction_list = [decoded_instruction["instruction_data"]["short_name"]]
-    #rd
-    if "rd_data" in decoded_instruction.keys():
-        assembly_instruction_list.append(decoded_instruction["rd_data"]["alias"])
+def make_assembly_code(name, rd=None, rs1=None, rs2=None, shamt=None, imm=None):
+    assembly_components = locals()
 
-    #rs1
-    if "rs1_data" in decoded_instruction.keys():
-        if decoded_instruction["rs1_data"]["decimal_value"] == 0:
-            assembly_instruction_list.append(decoded_instruction["rs1_data"]["name"])
-        else:
-            assembly_instruction_list.append(decoded_instruction["rs1_data"]["alias"])
-
-    #rs2
-    if "rs2_data" in decoded_instruction.keys():
-        if decoded_instruction["rs2_data"]["decimal_value"] == 0:
-            assembly_instruction_list.append(decoded_instruction["rs2_data"]["name"])
-        else:
-            assembly_instruction_list.append(decoded_instruction["rs2_data"]["alias"])
-
-    #shamt
-    if "shamt_data" in decoded_instruction.keys():
-        assembly_instruction_list.append(str(decoded_instruction["shamt_data"]["decimal_value"]))
-
-    #immediate
-    if "immediate_data" in decoded_instruction.keys():
-        assembly_instruction_list.append(str(decoded_instruction["immediate_data"]["decimal_value"]))
+    assembly_list = []
+    for key, val in assembly_components.items():
+        if val is not None:
+            if key in ("rs1", "rs2") and val == "x0":
+                assembly_list.append("0")
+            else:
+                assembly_list.append(val)
 
     # add formatting
     # do not add a comma if component is the first or the last component
-    length = len(assembly_instruction_list)
+    length = len(assembly_list)
     x = 0
-    assembly_instruction = ""
+    assembly_text = ""
     while x < length:
         if x > 0 and x < length - 1:
-            assembly_instruction += assembly_instruction_list[x] + ", "
+            assembly_text += assembly_list[x] + ", "
         else:
-            assembly_instruction += assembly_instruction_list[x] + " "
+            assembly_text += assembly_list[x] + " "
         x += 1
 
-    return assembly_instruction
+    return assembly_text

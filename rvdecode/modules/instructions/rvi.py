@@ -4,19 +4,19 @@ from ..helper import decode as decode, errorcheck as errorcheck
 
 INSTRUCTION_SET = "RV32I"
 
-SPACING_LIST = {
+def create_header_info(instruction, instruction_type):
+    spacing_list_reference = {
         "r_type": {"spacing_list": (7, 5, 5, 3, 5, 7), "label": "f7----| rs2-| rs1-| f3| rd--| opcode|\n"},
         "i_type": {"spacing_list": (12, 5, 3, 5, 7), "label": "imm--------| rs1-| f3| rd--| opcode|\n"},
         "shift": {"spacing_list": (7, 5, 5, 3, 5, 7), "label": "f7----|shamt| rs1-| f3| rd--| opcode|\n"},
         "s-type": {"spacing_list": (7, 5, 5, 3, 5, 7), "label": "imm---| rs2-| rs1-| f3| imm-| opcode|\n"},
         "b-type": {"spacing_list": (7, 5, 5, 3, 5, 7), "label": "imm---| rs2-| rs1-| f3| imm-| opcode|\n"},
         "u-type": {"spacing_list": (20, 5, 7), "label": "imm----------------| rd--| opcode|\n"},
-        "j-type": {"spacing_list": (20, 5, 7), "label": "imm----------------| rd--| opcode|\n"},}
+        "j-type": {"spacing_list": (20, 5, 7), "label": "imm----------------| rd--| opcode|\n"}, }
 
-def create_header_info(instruction, instruction_type):
     header_info = {"instruction": instruction,
-                    "spacing_list": SPACING_LIST[instruction_type]["spacing_list"],
-                    "label": SPACING_LIST[instruction_type]["label"],}
+                    "spacing_list": spacing_list_reference[instruction_type]["spacing_list"],
+                    "label": spacing_list_reference[instruction_type]["label"],}
     return header_info
 
 # INSTRUCTION FUNCTIONS
@@ -67,7 +67,7 @@ def r_instruction(instruction, opcode, func3):
     # Create rd dict.
     rd_info = decode.register_conversion(decode.get_rd(instruction))
 
-    # Create assembly info dict
+    # Create assembly info
     assembly_info = {"name": header_info["short_name"],
                      "rd": rd_info["alias"],
                      "rs1": rs1_info["alias"],
