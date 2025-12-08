@@ -4,19 +4,63 @@ from ..helper import decode as decode, errorcheck as errorcheck
 
 INSTRUCTION_SET = "RV32I"
 
-SPACING_LIST = {
-        "r_type": {"spacing_list": (7, 5, 5, 3, 5, 7), "label": "f7----| rs2-| rs1-| f3| rd--| opcode|\n"},
-        "i_type": {"spacing_list": (12, 5, 3, 5, 7), "label": "imm--------| rs1-| f3| rd--| opcode|\n"},
-        "shift": {"spacing_list": (7, 5, 5, 3, 5, 7), "label": "f7----|shamt| rs1-| f3| rd--| opcode|\n"},
-        "s-type": {"spacing_list": (7, 5, 5, 3, 5, 7), "label": "imm---| rs2-| rs1-| f3| imm-| opcode|\n"},
-        "b-type": {"spacing_list": (7, 5, 5, 3, 5, 7), "label": "imm---| rs2-| rs1-| f3| imm-| opcode|\n"},
-        "u-type": {"spacing_list": (20, 5, 7), "label": "imm----------------| rd--| opcode|\n"},
-        "j-type": {"spacing_list": (20, 5, 7), "label": "imm----------------| rd--| opcode|\n"},}
+def create_header_info(instruction, instruction_type, func3, func7=None):
 
-def create_header_info(instruction, instruction_type):
-    header_info = {"instruction": instruction,
-                    "spacing_list": SPACING_LIST[instruction_type]["spacing_list"],
-                    "label": SPACING_LIST[instruction_type]["label"],}
+    if instruction_type == "r_instruction":
+        instruction_lookup_value = func3 + func7
+        instruction_lookup_array = {
+            "0000000000": {"short_name": "add", "full_name": "add"},
+            "0000100000": {"short_name": "sub", "full_name": "subtract"},
+            "0010000000": {"short_name": "sll", "full_name": "shift left logical"},
+            "0100000000": {"short_name": "slt", "full_name": "set if less than"},
+            "0110000000": {"short_name": "sltu", "full_name": "set if less than, unsigned"},
+            "1000000000": {"short_name": "xor", "full_name": "exclusive-OR"},
+            "1010000000": {"short_name": "srl", "full_name": "shift right logical"},
+            "1010100000": {"short_name": "sra", "full_name": "shift right arithmetic"},
+            "1100000000": {"short_name": "or", "full_name": "OR"},
+            "1110000000": {"short_name": "and", "full_name": "AND"}
+        }
+        error_message ="Invalid func3 and/or func7."
+
+    elif instruction_type == "i_instruction":
+        instruction_lookup_value = func3 + func7
+        instruction_lookup_array = {
+            "0000000000": {"short_name": "add", "full_name": "add"},
+            "0000100000": {"short_name": "sub", "full_name": "subtract"},
+            "0010000000": {"short_name": "sll", "full_name": "shift left logical"},
+            "0100000000": {"short_name": "slt", "full_name": "set if less than"},
+            "0110000000": {"short_name": "sltu", "full_name": "set if less than, unsigned"},
+            "1000000000": {"short_name": "xor", "full_name": "exclusive-OR"},
+            "1010000000": {"short_name": "srl", "full_name": "shift right logical"},
+            "1010100000": {"short_name": "sra", "full_name": "shift right arithmetic"},
+            "1100000000": {"short_name": "or", "full_name": "OR"},
+            "1110000000": {"short_name": "and", "full_name": "AND"}
+        }
+        error_message ="Invalid func3 and/or func7."
+    else:
+        return
+
+    try:
+        instruction_lookup_array[instruction_lookup_value]
+    except KeyError:
+        error_message = error_message + "Your instruction is not valid."
+        return errorcheck.system_exit(error_message)
+    else:
+        header_info = {"full_name": instruction_lookup_array[instruction_lookup_value]["full_name"],
+                        "short_name": instruction_lookup_array[instruction_lookup_value]["short_name"]}
+
+    header_info.update({"instruction": instruction, "spacing_list": spacing_list, "spacing_label": spacing_label})
+
+    spacing_list_reference = {
+
+        "i_type": {"spacing_list": (12, 5, 3, 5, 7), "spacing_label": "imm--------| rs1-| f3| rd--| opcode|\n"},
+        "shift": {"spacing_list": (7, 5, 5, 3, 5, 7), "spacing_label": "f7----|shamt| rs1-| f3| rd--| opcode|\n"},
+        "s-type": {"spacing_list": (7, 5, 5, 3, 5, 7), "spacing_label": "imm---| rs2-| rs1-| f3| imm-| opcode|\n"},
+        "b-type": {"spacing_list": (7, 5, 5, 3, 5, 7), "spacing_label": "imm---| rs2-| rs1-| f3| imm-| opcode|\n"},
+        "u-type": {"spacing_list": (20, 5, 7), "spacing_label": "imm----------------| rd--| opcode|\n"},
+        "j-type": {"spacing_list": (20, 5, 7), "spacing_label": "imm----------------| rd--| opcode|\n"}, }
+
+
     return header_info
 
 # INSTRUCTION FUNCTIONS
@@ -30,26 +74,8 @@ def r_instruction(instruction, opcode, func3):
     header_info = create_header_info(instruction, "r_instruction")
 
     func7 = decode.get_func7(instruction)
-    instruction_lookup_value = func3 + func7
-    instruction_lookup = {
-        "0000000000": {"short_name": "add", "full_name": "add"},
-        "0000100000": {"short_name": "sub", "full_name": "subtract"},
-        "0010000000": {"short_name": "sll", "full_name": "shift left logical"},
-        "0100000000": {"short_name": "slt", "full_name": "set if less than"},
-        "0110000000": {"short_name": "sltu", "full_name": "set if less than, unsigned"},
-        "1000000000": {"short_name": "xor", "full_name": "exclusive-OR"},
-        "1010000000": {"short_name": "srl", "full_name": "shift right logical"},
-        "1010100000": {"short_name": "sra", "full_name": "shift right arithmetic"},
-        "1100000000": {"short_name": "or", "full_name": "OR"},
-        "1110000000": {"short_name": "and", "full_name": "AND"}
-        }
-    try:
-        instruction_lookup[instruction_lookup_value]
-    except KeyError:
-        error_message = "Invalid func3 and/or func7. Your instruction is not valid."
-        errorcheck.system_exit(error_message)
-    else:
-        header_info.update(instruction_lookup[instruction_lookup_value])
+
+    decode.instruction_name_lookup()
 
     # Create general info dict.
     general_info = {"instruction_type": "R-Type",
@@ -67,7 +93,7 @@ def r_instruction(instruction, opcode, func3):
     # Create rd dict.
     rd_info = decode.register_conversion(decode.get_rd(instruction))
 
-    # Create assembly info dict
+    # Create assembly info
     assembly_info = {"name": header_info["short_name"],
                      "rd": rd_info["alias"],
                      "rs1": rs1_info["alias"],
