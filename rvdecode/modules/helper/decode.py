@@ -92,6 +92,29 @@ def get_instruction_type(opcode):
             return instruction_type
 
 
+def instruction_lookup(lookup_value, lookup_array, error_message):
+    try:
+        lookup_array[lookup_value]
+    except KeyError:
+        error_message = error_message + " Your instruction is not valid."
+        errorcheck.system_exit(error_message)
+    else:
+        return lookup_array[lookup_value]
+
+
+def create_general_info(type, set, opcode, func3=None, func7=None):
+    general_info = {"instruction_type": type,
+                    "instruction_set": set,
+                    "opcode": opcode}
+
+    if func3 is not None:
+        general_info.update({"func3": func3})
+    if func7 is not None:
+        general_info.update({"func7": func7})
+
+    return general_info
+
+
 ##############
 # CONVERSION #
 ##############

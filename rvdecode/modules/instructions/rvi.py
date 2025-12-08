@@ -163,26 +163,16 @@ def i_instruction_shift(instruction, opcode, func3):
     # Create header dict.
     header_info = create_header_info(instruction, "i_instruction")
 
+    # func3 + func7 is lookup value
     func7 = decode.get_func7(instruction)
-    instruction_lookup_value = func3 + func7
     instruction_lookup = {
                 "0010000000": {"short_name": "slli", "full_name": "shift left logical immediate"},
                 "1010000000": {"short_name": "srli", "full_name": "shift right logical immediate"},
                 "1010100000": {"short_name": "srai", "full_name": "shift right arithmetic immediate"}}
-    try:
-        instruction_lookup[instruction_lookup_value]
-    except KeyError:
-        error_message = "Invalid func3 and/or func7. Your instruction is not valid."
-        errorcheck.system_exit(error_message)
-    else:
-        header_info.update(instruction_lookup[instruction_lookup_value])
+    header_info.update(decode.instruction_lookup(func3+func7, instruction_lookup, "Invalid func3 and/or func7."))
 
     # Create general info dict.
-    general_info = {"instruction_type": "I-Type (Shift)",
-                    "instruction_set": INSTRUCTION_SET,
-                    "opcode": opcode,
-                    "func3": func3,
-                    "func7": func7}
+    general_info = decode.create_general_info("I-Type (Shift)", INSTRUCTION_SET, opcode, func3=func3, func7=func7)
 
     # Create rs1 dict.
     rs1_info = decode.register_conversion(decode.get_rs1(instruction))
@@ -225,18 +215,12 @@ def s_instruction(instruction, opcode, func3):
     # Create header dict.
     header_info = create_header_info(instruction, "s_instruction")
 
-    instruction_lookup_value = func3
+    # func3 is lookup value
     instruction_lookup = {
         "000": {"short_name": "sb", "full_name": "store byte"},
         "001": {"short_name": "sh", "full_name": "store halfword"},
         "010": {"short_name": "sw", "full_name": "store word"}}
-    try:
-        instruction_lookup[instruction_lookup_value]
-    except KeyError:
-        error_message = "Invalid func3. Your instruction is not valid."
-        errorcheck.system_exit(error_message)
-    else:
-        header_info.update(instruction_lookup[instruction_lookup_value])
+    header_info.update(decode.instruction_lookup(func3, instruction_lookup, "Invalid func3."))
 
     # Create general info dict.
     general_info = {"instruction_type": "S-Type",
