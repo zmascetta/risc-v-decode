@@ -1,6 +1,6 @@
 # RV32I instruction set
 
-from ..helper import decode as decode, errorcheck as errorcheck
+from rvdecode.modules.helper import decode as decode, errorcheck as errorcheck
 
 INSTRUCTION_SET = "RV32I"
 
