@@ -1,5 +1,29 @@
 from rvdecode.modules.helper import assembly, errorcheck
 
+# get opcode and instruction set
+def get_opcode(instruction):
+    opcode = instruction[-7:]
+
+    # fence, ecall, ebreak, or CSR instructions
+    invalid_opcodes = ("0001111", "1110011")
+
+    # RV32I opcodes
+    rv32i_opcodes = ("1101111", "1100011", "0110011", "0100011", "0110111","0010111", "0000011", "0010011")
+
+    if opcode in invalid_opcodes:
+        extra_lines = "ERROR: Invalid opcode. RV-Decode does not support fence, ecall, ebreak, or CSR instructions."
+        errorcheck.system_exit(extra_lines)
+
+    if opcode in rv32i_opcodes:
+        instruction_set = "RV32I"
+    else:
+        extra_lines = "ERROR: Invalid opcode. Opcode belongs to an extension that is not currently supported."
+        errorcheck.system_exit(extra_lines)
+
+    return opcode, instruction_set
+
+
+
 # registers
 def get_rs1(instruction):
     return instruction[12:17]
@@ -22,9 +46,7 @@ def get_func3(instruction):
 def get_func7(instruction):
     return instruction[0:7]
 
-# opcode
-def get_opcode(instruction):
-    return instruction[25:]
+
 
 # identify instruction type via opcode
 def get_instruction_type(opcode):
@@ -36,8 +58,7 @@ def get_instruction_type(opcode):
                              "0010111": "U-Type",
                              "0000011": "I-Type",
                              "0010011": "I-Type",
-                             "0001111": "error",
-                             "1110011": "error"}
+
 
     # exit if invalid opcode
     try:
@@ -64,9 +85,3 @@ def create_general_info(type, set, opcode, func3=None, func7=None):
         general_info.update({"func7": func7})
 
     return general_info
-
-
-def decode_instruction(instruction):
-
-
-    return decoded_instruction

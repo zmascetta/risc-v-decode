@@ -12,7 +12,8 @@ def main():
     errorcheck.instruction_check(instruction)
 
     # perform instruction decode
-    decoded_instruction = decode.decode_instruction(instruction)
+    opcode, instruction_set = decode.get_opcode(instruction)
+
 
     # print output
     output.output_instruction(decoded_instruction)

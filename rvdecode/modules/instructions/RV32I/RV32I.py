@@ -4,6 +4,15 @@ from rvdecode.modules.helper import decode as decode, errorcheck as errorcheck
 
 INSTRUCTION_SET = "RV32I"
 
+INSTRUCTION_TYPES = {"1101111": "J-Type",
+                        "1100011": "B-Type",
+                        "0110011": "R-Type",
+                        "0100011": "S-Type",
+                        "0110111": "U-Type",
+                        "0010111": "U-Type",
+                        "0000011": "I-Type",
+                        "0010011": "I-Type"}
+
 def create_header_info(instruction, instruction_type, func3, func7=None):
 
     if instruction_type == "r_instruction":
