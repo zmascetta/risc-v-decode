@@ -39,18 +39,7 @@ def print_instruction(instruction_data, instruction_type):
     instruction = instruction_data["instruction"]
     print(header + "\n" + instruction + "\n")
 
-    if instruction_type == "R-Type":
-        spacing_list = (7, 5, 5, 3, 5, 7)
-        label = "f7----| rs2-| rs1-| f3| rd--| opcode|\n"
-    elif instruction_type == "I-Type":
-        spacing_list = (12, 5, 3, 5, 7)
-        label = "imm--------| rs1-| f3| rd--| opcode|\n"
-    elif instruction_type == "S-Type" or instruction_type == "B-Type":
-        spacing_list = (7, 5, 5, 3, 5, 7)
-        label = "imm---| rs2-| rs1-| f3| imm-| opcode|"
-    else:
-        spacing_list = (20, 5, 7)
-        label = "imm----------------| rd--| opcode|"
+
 
     print(label, end="")
     print_spaced_instruction(instruction, spacing_list)
