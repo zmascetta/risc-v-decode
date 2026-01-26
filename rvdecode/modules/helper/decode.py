@@ -2,27 +2,33 @@ from rvdecode.modules.helper import assembly, errorcheck
 
 # get opcode and instruction set
 def get_opcode(instruction):
-    opcode = instruction[-7:]
+    return instruction[-7:]
 
-    # fence, ecall, ebreak, or CSR instructions
-    invalid_opcodes = ("0001111", "1110011")
-
+# "source" refers to the ISA or the extension that the instruction comes from.
+# i've chosen to call it this because it is easier to lump "base ISA" and "extension" together
+# instead of trying to reference both of them.
+# (e.g., calling the function get_isa_or_ext, using a variable called "isa_or_ext", etc.)
+def get_source(opcode):
     # RV32I opcodes
     rv32i_opcodes = ("1101111", "1100011", "0110011", "0100011", "0110111","0010111", "0000011", "0010011")
 
-    if opcode in invalid_opcodes:
-        extra_lines = "ERROR: Invalid opcode. RV-Decode does not support fence, ecall, ebreak, or CSR instructions."
-        errorcheck.system_exit(extra_lines)
-
     if opcode in rv32i_opcodes:
-        instruction_set = "RV32I"
+        source = "RV32I"
     else:
-        extra_lines = "ERROR: Invalid opcode. Opcode belongs to an extension that is not currently supported."
+        extra_lines = "ERROR: Invalid opcode. Opcode belongs to an extension that is not currently supported. NOTE, RV-Decode does not support fence, ecall, ebreak, or CSR instructions."
         errorcheck.system_exit(extra_lines)
 
-    return opcode, instruction_set
+    return source
 
-
+# identify instruction type via opcode
+def get_instruction_type(opcode, instruction_list):
+    try:
+        instruction_type = instruction_list[opcode]
+    except KeyError:
+        extra_lines = "ERROR: Opcode in instruction is not valid."
+        errorcheck.system_exit(extra_lines)
+    else:
+        return instruction_type
 
 # registers
 def get_rs1(instruction):
@@ -47,36 +53,9 @@ def get_func7(instruction):
     return instruction[0:7]
 
 
-
-# identify instruction type via opcode
-def get_instruction_type(opcode):
-    instruction_reference = {"1101111": "J-Type",
-                             "1100011": "B-Type",
-                             "0110011": "R-Type",
-                             "0100011": "S-Type",
-                             "0110111": "U-Type",
-                             "0010111": "U-Type",
-                             "0000011": "I-Type",
-                             "0010011": "I-Type",
-
-
-    # exit if invalid opcode
-    try:
-        instruction_type = instruction_reference[opcode]
-    except KeyError:
-        extra_lines = "ERROR: Opcode in instruction is not valid."
-        errorcheck.system_exit(extra_lines)
-    else:
-        if instruction_type == "error":
-            extra_lines = "ERROR: RV-Decode does not support fence, ecall, ebreak, or CSR instructions."
-            errorcheck.system_exit(extra_lines)
-        else:
-            return instruction_type
-
-
-def create_general_info(type, set, opcode, func3=None, func7=None):
+def create_general_info(type, source, opcode, func3=None, func7=None):
     general_info = {"instruction_type": type,
-                    "instruction_set": set,
+                    "source": source,
                     "opcode": opcode}
 
     if func3 is not None:
