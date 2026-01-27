@@ -1,23 +1,22 @@
-from rvdecode.modules.helper import decode as decode, errorcheck as errorcheck
-
+from rvdecode.modules.helper import decode as decode, errorcheck as errorcheck, header as header
 
 '''
 R-Instruction
  Components: Opcode, Func3, Func7, RS1, RS2, RD
 '''
-
-
-def r_instruction(instruction, opcode, func3):
-    # Create header dict.
-    header_info = create_header_info(instruction, "r_instruction")
-
+def decode_instruction(instruction, opcode):
+    func3 = decode.get_func3(instruction)
     func7 = decode.get_func7(instruction)
+    lookup_value = opcode+func3+func7
+    spacing_list = (7, 5, 5, 3, 5, 7)
+    spacing_label = "f7----| rs2-| rs1-| f3| rd--| opcode|\n"
 
-    decode.instruction_name_lookup()
+    # Create header dict.
+    header_info = header.create_header_info(instruction, spacing_list, spacing_label, "r-type", lookup_value)
 
     # Create general info dict.
     general_info = {"instruction_type": "R-Type",
-                    "instruction_set": INSTRUCTION_SET,
+                    "instruction_set": header_info["source"],
                     "opcode": opcode,
                     "func3": func3,
                     "func7": func7}

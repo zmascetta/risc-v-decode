@@ -1,0 +1,11 @@
+ {
+  "0110111": {
+    "short_name":  "lui",
+    "full_name": "load upper immediate",
+    "source": "RV32I"},
+
+  "0010111": {
+    "short_name":  "auipc",
+    "full_name": "add upper immediate to pc",
+    "source": "RV32I"}
+ }

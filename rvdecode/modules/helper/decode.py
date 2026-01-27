@@ -1,6 +1,6 @@
 from rvdecode.modules.helper import assembly, errorcheck
 
-# get opcode and instruction set
+# get opcode
 def get_opcode(instruction):
     return instruction[-7:]
 

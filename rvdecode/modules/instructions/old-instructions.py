@@ -12,9 +12,6 @@ INSTRUCTION_TYPES = {"1101111": "J-Type",
                         "0000011": "I-Type",
                         "0010011": "I-Type"}
 
-def test_function():
-    print("this works")
-
 def create_header_info(instruction, instruction_type, func3, func7=None):
 
     if instruction_type == "r_instruction":

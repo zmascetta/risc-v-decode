@@ -1,0 +1,52 @@
+{
+  "01100110000000000": {
+    "short_name":  "add",
+    "full_name": "add",
+    "source": "RV32I"},
+
+  "01100110000100000": {
+    "short_name":  "sub",
+    "full_name": "subtract",
+    "source": "RV32I"},
+
+  "01100110010000000": {
+    "short_name":  "sll",
+    "full_name": "shift left logical",
+    "source": "RV32I"},
+
+  "01100110100000000": {
+    "short_name":  "slt",
+    "full_name": "set if less than",
+    "source": "RV32I"},
+
+  "01100110110000000": {
+    "short_name":  "sltu",
+    "full_name": "set if less than, unsigned",
+    "source": "RV32I"},
+
+  "01100111000000000": {
+    "short_name":  "xor",
+    "full_name": "exclusive-OR",
+    "source": "RV32I"},
+
+  "01100111010000000": {
+    "short_name":  "srl",
+    "full_name": "shift right logical",
+    "source": "RV32I"},
+
+  "01100111010100000": {
+    "short_name":  "sra",
+    "full_name": "shift right arithmetic",
+    "source": "RV32I"},
+
+  "01100111100000000": {
+    "short_name":  "or",
+    "full_name": "OR",
+    "source": "RV32I"},
+
+  "01100111110000000": {
+    "short_name":  "and",
+    "full_name": "AND",
+    "source": "RV32I"}
+}
+}
