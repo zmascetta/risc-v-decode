@@ -1,7 +1,10 @@
-import json, errorcheck
+import json
+
+from rvdecode.modules.helper import errorcheck as errorcheck
+
 
 def lookup_instruction(instruction_type, lookup_value):
-    file_location = f"../instructions/{instruction_type}/{instruction_type}.json"
+    file_location = f"modules/instructions/{instruction_type}/{instruction_type}.json"
 
     with open(file_location, 'r') as file:
         instruction_info = json.load(file)
