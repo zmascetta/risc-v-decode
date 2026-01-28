@@ -27,10 +27,10 @@ def decode_instruction(instruction, opcode):
 
     # Create offset dicts.
 
-    off_instr_info = {"binary_value": instruction[0:8] + " " + instruction[20:24]}
+    off_instr_info = {"binary": instruction[0:8] + " " + instruction[20:24]}
 
     final_value = instruction[0:1] + instruction[24:25] + instruction[1:7] + instruction[20:24] + "0"
-    off_final_info = {"binary_value": final_value}
+    off_final_info = {"binary": final_value}
 
     # check if signed or unsigned for correct conversion
     unsigned_list = ("bltu", "bgeu")
@@ -40,7 +40,7 @@ def decode_instruction(instruction, opcode):
         off_final_info.update(convert.signed_conversion(final_value))
 
     # Create assembly text
-    assembly_text = decode.make_assembly_code(header_info["short_name"], rs1=rs1_info["alias"], rs2=rs2_info["alias"], imm=off_final_info["decimal_value"])
+    assembly_text = decode.make_assembly_code(header_info["short_name"], rs1=rs1_info["alias"], rs2=rs2_info["alias"], imm=off_final_info["decimal"])
 
     # Add all dicts to decoded instruction dict
     decoded_instruction = {"header_info": header_info,

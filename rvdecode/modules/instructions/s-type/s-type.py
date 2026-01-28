@@ -27,11 +27,11 @@ def decode_instruction(instruction, opcode):
 
     # Create offset dict
     offset = instruction[0:8] + instruction[20:25]
-    off_info = {"binary_value": offset}
+    off_info = {"binary": offset}
     off_info.update(convert.signed_conversion(offset))
 
     # Create assembly text
-    assembly_text = decode.make_assembly_code(header_info["short_name"], rs1=rs1_info["alias"], rs2=rs2_info["alias"], imm=off_info["decimal_value"])
+    assembly_text = decode.make_assembly_code(header_info["short_name"], rs1=rs1_info["alias"], rs2=rs2_info["alias"], imm=off_info["decimal"])
 
     # Add all dicts to decoded instruction dict
     decoded_instruction = {"header_info": header_info,

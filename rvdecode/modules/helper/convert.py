@@ -56,8 +56,8 @@ def twos_complement(value, size):
 
 def unsigned_conversion(value):
     value_decimal = int(value, base=2)
-    value_data = {"decimal_value": value_decimal,
-                        "hex_value": hex(value_decimal)}
+    value_data = {"decimal": value_decimal,
+                        "hex": hex(value_decimal)}
     return value_data
 
 def signed_conversion(value, size=32):
@@ -77,6 +77,6 @@ def signed_conversion(value, size=32):
     else:
         value_decimal = int(value, base=2)
 
-    value_data = {"decimal_value": value_decimal,
-                        "hex_value": hex(value_decimal)}
+    value_data = {"decimal": value_decimal,
+                        "hex": hex(value_decimal)}
     return value_data

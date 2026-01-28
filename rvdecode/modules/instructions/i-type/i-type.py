@@ -28,14 +28,14 @@ def regular_instruction(instruction, opcode, func3):
 
     # Create imm. dict.
     immediate = instruction[0:12]
-    imm_info = {"binary_value": immediate}
+    imm_info = {"binary": immediate}
     if header_info["short_name"] in ("sltiu", "sltu", "lbu", "lhu"):
         imm_info.update(convert.unsigned_conversion(immediate))
     else:
         imm_info.update(convert.signed_conversion(immediate))
 
     # Create assembly text
-    assembly_text = decode.make_assembly_code(header_info["short_name"], rd=rd_info["alias"], rs1=rs1_info["alias"], imm=imm_info["decimal_value"])
+    assembly_text = decode.make_assembly_code(header_info["short_name"], rd=rd_info["alias"], rs1=rs1_info["alias"], imm=imm_info["decimal"])
 
     # Add all dicts to decoded instruction dict
     decoded_instruction = {"header_info": header_info,
@@ -81,11 +81,11 @@ def shift_instruction(instruction, opcode, func3):
         error_message = "Invalid shift amount. Your instruction is not valid."
         errorcheck.system_exit(error_message)
 
-    shamt_info = {"binary_value": shamt}
+    shamt_info = {"binary": shamt}
     shamt_info.update(convert.unsigned_conversion(shamt))
 
     # Create assembly text
-    assembly_text = decode.make_assembly_code(header_info["short_name"], rd=rd_info["alias"], rs1=rs1_info["alias"], shamt=shamt_info["decimal_value"])
+    assembly_text = decode.make_assembly_code(header_info["short_name"], rd=rd_info["alias"], rs1=rs1_info["alias"], shamt=shamt_info["decimal"])
 
     # Add all dicts to decoded instruction dict
     decoded_instruction = {"header_info": header_info,
