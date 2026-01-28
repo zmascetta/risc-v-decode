@@ -42,11 +42,11 @@ def register_conversion(register_value):
                      }
     return register_data
 
-def twos_complement(immediate, size):
+def twos_complement(value, size):
      # get mask with 2^k - 1
      mask = (2 ** size) - 1
      # bitwise xor
-     value = mask ^ immediate
+     value = mask ^ value
      # add 1
      value += 1
      # make value negative
@@ -54,38 +54,29 @@ def twos_complement(immediate, size):
 
      return value
 
-def unsigned_conversion(immediate):
+def unsigned_conversion(value):
+    value_decimal = int(value, base=2)
+    value_data = {"decimal_value": value_decimal,
+                        "hex_value": hex(value_decimal)}
+    return value_data
 
-    immediate_decimal = int(immediate, base=2)
-    immediate_data = {"decimal_value": immediate_decimal,
-                        "hex_value": hex(immediate_decimal)}
-    return immediate_data
-
-def signed_conversion(immediate, size=32):
+def signed_conversion(value, size=32):
     # perform twos complement if negative
-    if immediate[0:1] == "1":
+    if value[0:1] == "1":
 
-        immediate = immediate.rjust(32, "1")
-        immediate = int(immediate, base=2)
+        value = value.rjust(32, "1")
+        value = int(value, base=2)
         # get mask with 2^k - 1
         mask = (2 ** size) - 1
         # bitwise xor
-        value = mask ^ immediate
+        value = mask ^ value
         # add 1
         value += 1
         # make value negative
-        immediate_decimal = -value
+        value_decimal = -value
     else:
-        immediate_decimal = int(immediate, base=2)
+        value_decimal = int(value, base=2)
 
-    immediate_data = {"decimal_value": immediate_decimal,
-                        "hex_value": hex(immediate_decimal)}
-    return immediate_data
-
-def shamt_conversion(shamt):
-    shamt_dec = int(shamt, base=2)
-
-    shamt_data = {"binary_value": "shamt",
-                    "decimal_value": shamt_dec}
-
-    return shamt_data
+    value_data = {"decimal_value": value_decimal,
+                        "hex_value": hex(value_decimal)}
+    return value_data

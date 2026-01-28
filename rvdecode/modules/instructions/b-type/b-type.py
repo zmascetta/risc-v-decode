@@ -15,7 +15,7 @@ def decode_instruction(instruction, opcode):
 
     # Create general info dict.
     general_info = {"instruction_type": "B-Type",
-                    "instruction_set": header_info["source"],
+                    "source": header_info["source"],
                     "opcode": opcode,
                     "func3": func3}
 
