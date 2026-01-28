@@ -58,7 +58,7 @@ def make_assembly_code(name, rd=None, rs1=None, rs2=None, shamt=None, imm=None):
             if key in ("rs1", "rs2") and val == "x0":
                 assembly_list.append("0")
             else:
-                assembly_list.append(val)
+                assembly_list.append(str(val))
 
     # add formatting
     # do not add a comma if component is the first or the last component

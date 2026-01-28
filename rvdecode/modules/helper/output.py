@@ -2,9 +2,12 @@ HEADER_VALUES = {"rs1_info": "Source Register 1 (rs1)",
                     "rs2_info": "Source Register 2 (rs2)",
                     "rd_info": "Destination Register (rd)",
                     "shamt_info": "Shift Amount",
-                    "immediate_info": "Immediate",
+                    "imm_info": "Immediate",
+                    "off_instr_info": "Offset\nValue In Instruction",
+                    "off_final_info": "Final Value (Position Corrected And Bit Shifted)",
                     "general_info": "General Information",
-                    "assembly_info": "Assembly Code"}
+                    "assembly_info": "Assembly Code",
+                 }
 
 
 def format_label(label):

@@ -54,16 +54,19 @@ def twos_complement(immediate, size):
 
      return value
 
-def unsigned_immediate_conversion(immediate):
+def unsigned_conversion(immediate):
 
     immediate_decimal = int(immediate, base=2)
     immediate_data = {"decimal_value": immediate_decimal,
                         "hex_value": hex(immediate_decimal)}
     return immediate_data
 
-def signed_immediate_conversion(immediate, size=32):
+def signed_conversion(immediate, size=32):
     # perform twos complement if negative
     if immediate[0:1] == "1":
+
+        immediate = immediate.rjust(32, "1")
+        immediate = int(immediate, base=2)
         # get mask with 2^k - 1
         mask = (2 ** size) - 1
         # bitwise xor
@@ -71,7 +74,7 @@ def signed_immediate_conversion(immediate, size=32):
         # add 1
         value += 1
         # make value negative
-        value = -value
+        immediate_decimal = -value
     else:
         immediate_decimal = int(immediate, base=2)
 
