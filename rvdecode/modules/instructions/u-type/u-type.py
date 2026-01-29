@@ -23,22 +23,22 @@ def decode_instruction(instruction, opcode):
 
     # Create immediate dicts.
     immediate = instruction[0:20]
-    up_imm_instr_info = {"binary": immediate}
-    up_imm_instr_info.update(convert.unsigned_conversion(immediate))
+    u_imm_instr_info = {"binary": immediate}
+    u_imm_instr_info.update(convert.unsigned_conversion(immediate))
 
     immediate = immediate.ljust(32,"0")
-    up_imm_final_info = {"binary": immediate}
-    up_imm_final_info.update(convert.unsigned_conversion(immediate))
+    u_imm_final_info = {"binary": immediate}
+    u_imm_final_info.update(convert.unsigned_conversion(immediate))
 
     # Create assembly text
-    assembly_text = decode.make_assembly_code(header_info["short_name"], imm=up_imm_instr_info["hex"])
+    assembly_text = decode.make_assembly_code(header_info["short_name"], imm=u_imm_instr_info["hex"])
 
     # Add all dicts to decoded instruction dict
     decoded_instruction = {"header_info": header_info,
                            "general_info": general_info,
                            "rd_info": rd_info,
-                           "up_imm_instr_info": up_imm_instr_info,
-                           "up_imm_final_info": up_imm_final_info,
+                           "u_imm_instr_info": u_imm_instr_info,
+                           "u_imm_final_info": u_imm_final_info,
                            "assembly_info": assembly_text}
 
     return decoded_instruction
