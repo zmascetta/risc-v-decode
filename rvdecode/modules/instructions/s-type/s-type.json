@@ -1,0 +1,16 @@
+{
+  "0100011000": {
+    "short_name":  "sb",
+    "full_name": "store byte",
+    "source": "RV32I"},
+
+  "0100011001": {
+    "short_name":  "sh",
+    "full_name": "store halfword",
+    "source": "RV32I"},
+
+  "0100011010": {
+    "short_name":  "sw",
+    "full_name": "store word",
+    "source": "RV32I"}
+}

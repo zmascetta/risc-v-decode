@@ -1,10 +1,16 @@
-HEADER_VALUES = {"rs1_data": "Source Register 1 (rs1)",
-                    "rs2_data": "Source Register 2 (rs2)",
-                    "rd_data": "Destination Register (rd)",
-                    "shamt_data": "Shift Amount",
-                    "immediate_data": "Immediate",
-                    "general_data": "General Information",
-                    "assembly": "Assembly Code"}
+HEADER_VALUES = {"rs1_info": "Source Register 1 (rs1)",
+                    "rs2_info": "Source Register 2 (rs2)",
+                    "rd_info": "Destination Register (rd)",
+                    "shamt_info": "Shift Amount",
+                    "imm_info": "Immediate",
+                    "u_imm_instr_info": "Offset\nValue In Instruction",
+                    "u_imm_final_info": "Final Value (Zero Extended)",
+                    "off_info": "Offset",
+                    "off_instr_info": "Offset\nValue In Instruction",
+                    "off_final_info": "Final Value (Position Corrected And Zero Extended)",
+                    "general_info": "General Information",
+                    "assembly_info": "Assembly Code",
+                 }
 
 
 def format_label(label):
@@ -34,16 +40,9 @@ def print_spaced_instruction(instruction, spacing_list):
             x += 1
     print("\n")
 
-def print_instruction(instruction_data, instruction_type):
-    header = format_label(instruction_data["full_name"]) + " (" + instruction_data["short_name"] + ")"
-    instruction = instruction_data["instruction"]
-    print(header + "\n" + instruction + "\n")
-
-
-
-    print(label, end="")
-    print_spaced_instruction(instruction, spacing_list)
-
+def print_header(header_info):
+    print(f"{header_info["full_name"].title()} ({header_info["short_name"]})\n{header_info["instruction"]}\n\n{header_info["spacing_label"]}",end="")
+    print_spaced_instruction(header_info["instruction"], header_info["spacing_list"])
 
 def print_data(data):
     for label, value in data.items():
@@ -51,31 +50,21 @@ def print_data(data):
         print(format_label(label) + ": " + value)
     print()
 
-
 def print_data_header(data):
     print(HEADER_VALUES[data])
 
 
 def output_instruction(decoded_instruction):
+    # print header info, store assembly text, remove both so other dicts. can be looped through
+    print_header(decoded_instruction["header_info"])
+    decoded_instruction.pop("header_info")
+    assembly_text = decoded_instruction["assembly_info"]
+    decoded_instruction.pop("assembly_info")
 
-    # get instruction set from instruction_set dict and add it to the general_data dict.
-    updated_general_data = {"instruction_set": decoded_instruction["instruction_data"]["instruction_set"]}
-    updated_general_data.update(decoded_instruction["general_data"])
-    decoded_instruction["general_data"] = updated_general_data
-
-    # pop instruction data from decoded_instruction.
-    # instruction_data has specific printing needs and shouldn't be printed using the general loop.
-    instruction_data = decoded_instruction.pop("instruction_data")
-    print_instruction(instruction_data, updated_general_data["instruction_type"])
-
-    # pop assembly - it is just a string and doesn't ned the general oop either.
-    assembly_value = decoded_instruction.pop("assembly")
-
-    # loop for printing all the data
+    # loop for printing remaining data
     for data in decoded_instruction:
         print_data_header(data)
         print_data(decoded_instruction[data])
 
-    # print assembly code
-    print_data_header("assembly")
-    print(assembly_value)
+    # print assembly
+    print(f"Assembly Code\n{assembly_text}")

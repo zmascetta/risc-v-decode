@@ -11,18 +11,15 @@ def main():
     errorcheck.argument_check(sys.argv)
     errorcheck.instruction_check(instruction)
 
-    # get opcode and source ISA/extension.
+    # get opcode and instruction type.
     opcode = decode.get_opcode(instruction)
-    source = decode.get_source(opcode)
+    instruction_type = decode.get_instruction_type(opcode)
 
     # import corresponding module
-    instruction_module = importlib.import_module(f"rvdecode.modules.instructions.{source}.{source}")
+    instruction_module = importlib.import_module(f"modules.instructions.{instruction_type}.{instruction_type}")
 
-
-
-
-
-
+    # decode instruction
+    decoded_instruction = instruction_module.decode_instruction(instruction, opcode)
 
     # print output
     output.output_instruction(decoded_instruction)

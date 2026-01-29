@@ -1,0 +1,31 @@
+{
+  "1100011000": {
+    "short_name":  "beq",
+    "full_name": "branch if equal",
+    "source": "RV32I"},
+
+  "1100011001": {
+    "short_name":  "bne",
+    "full_name": "branch if not equal",
+    "source": "RV32I"},
+
+  "1100011100": {
+    "short_name":  "blt",
+    "full_name": "branch if less than",
+    "source": "RV32I"},
+
+  "1100011101": {
+    "short_name":  "bge",
+    "full_name": "branch if greater than or equal",
+    "source": "RV32I"},
+
+  "1100011110": {
+    "short_name":  "bltu",
+    "full_name": "branch if less than, unsigned",
+    "source": "RV32I"},
+
+  "1100011111": {
+    "short_name":  "bgeu",
+    "full_name": "branch if greater than or equal, unsigned",
+    "source": "RV32I"}
+}
