@@ -12,6 +12,10 @@ def argument_check(arguments):
 def instruction_check(instruction):
     # clear any spaces if passed in with quotes
     instruction = instruction.replace(' ', '')
+
+    if instruction[0:2] == "0x":
+        instruction = instruction[2:]
+
     # check for 32-bit binary instruction
     binary_check = re.search(
         r"^[0,1]{32}$",
