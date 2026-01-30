@@ -10,11 +10,8 @@ def argument_check(arguments):
 # check to ensure that either a 32-bit bin instr or 8-bit hex instr has been entered
 # will return binary instruction.
 def instruction_check(instruction):
-    # clear any spaces if passed in with quotes
-    instruction = instruction.replace(' ', '')
-
-    if instruction[0:2] == "0x":
-        instruction = instruction[2:]
+    # clear any spaces if passed in with quotes/remove 0x is present
+    instruction = instruction.replace(' ', '').replace('0x','')
 
     # check for 32-bit binary instruction
     binary_check = re.search(
@@ -34,13 +31,13 @@ def instruction_check(instruction):
         instruction = str(bin(instruction))[2:].zfill(32)
         return instruction
     else:
-        system_exit()
+        return system_exit()
 
 # function for exiting system
 # accepts additional lines if necessary
 def system_exit(extra_lines=None):
     error_message = "Usage:\n" \
-                    "\t\033[1mrvdecode\033[0m instruction\n" \
+                    "\t\033[1mrvdecode\033[0m [INSTRUCTION]\n" \
                     "\tInstruction must be a valid 32-bit binary or 8-bit hex instruction."
     if extra_lines is not None:
         error_message += "\n\n\t" + extra_lines

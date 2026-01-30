@@ -9,6 +9,10 @@ def main():
 
     # perform error checks
     errorcheck.argument_check(sys.argv)
+    # check if help flagged used
+    if sys.argv[1] in ("-h","--help"):
+        output.print_help()
+    # check if valid bin/hex instruction entered
     instruction = errorcheck.instruction_check(instruction)
 
     # get opcode and instruction type.

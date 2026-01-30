@@ -22,4 +22,7 @@ def create_header_info(instruction, spacing_list, spacing_label, instruction_typ
 
     full_name, short_name, source = lookup_instruction(instruction_type, lookup_value)
 
-    return {"instruction": instruction, "spacing_list": spacing_list, "spacing_label": spacing_label, "full_name": full_name, "short_name": short_name, "source": source}
+    instruction_hex = str(hex(int(instruction, 2)))
+
+
+    return {"instruction": instruction, "instruction_hex": instruction_hex, "spacing_list": spacing_list, "spacing_label": spacing_label, "full_name": full_name, "short_name": short_name, "source": source}
