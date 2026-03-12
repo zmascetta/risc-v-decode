@@ -9,7 +9,11 @@ def main():
 
     # perform error checks
     errorcheck.argument_check(sys.argv)
-    errorcheck.instruction_check(instruction)
+    # check if help flagged used
+    if sys.argv[1] in ("-h","--help"):
+        output.print_help()
+    # check if valid bin/hex instruction entered
+    instruction = errorcheck.instruction_check(instruction)
 
     # get opcode and instruction type.
     opcode = decode.get_opcode(instruction)
@@ -23,6 +27,8 @@ def main():
 
     # print output
     output.output_instruction(decoded_instruction)
+
+    exit(0)
 
 
 if __name__ == "__main__":

@@ -41,7 +41,11 @@ def print_spaced_instruction(instruction, spacing_list):
     print("\n")
 
 def print_header(header_info):
-    print(f"{header_info["full_name"].title()} ({header_info["short_name"]})\n{header_info["instruction"]}\n\n{header_info["spacing_label"]}",end="")
+    print(
+        f'''{header_info["full_name"].title()} ({header_info["short_name"]})
+{header_info["instruction"]}
+{header_info["instruction_hex"]}
+    \n{header_info["spacing_label"]}''',end="")
     print_spaced_instruction(header_info["instruction"], header_info["spacing_list"])
 
 def print_data(data):
@@ -68,3 +72,12 @@ def output_instruction(decoded_instruction):
 
     # print assembly
     print(f"Assembly Code\n{assembly_text}")
+
+def print_help():
+    print('''
+    rvdecode [INSTRUCTION]
+
+    Instruction can be binary or hex. It can also contain spaces if it is enclosed by quotes.
+    ''')
+
+    return exit(0)
