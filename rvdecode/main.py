@@ -1,17 +1,11 @@
-import sys, importlib
+import sys, importlib, typer
 from rvdecode.modules.helper import decode as decode, errorcheck as errorcheck, output as output
 
+app = typer.Typer()
 
-def main():
 
-    # strip whitespace
-    instruction = sys.argv[1].replace(" ","")
+def main(instruction: str):
 
-    # perform error checks
-    errorcheck.argument_check(sys.argv)
-    # check if help flagged used
-    if sys.argv[1] in ("-h","--help"):
-        output.print_help()
     # check if valid bin/hex instruction entered
     instruction = errorcheck.instruction_check(instruction)
 
@@ -32,5 +26,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)
 

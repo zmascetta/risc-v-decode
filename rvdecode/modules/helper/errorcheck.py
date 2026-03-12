@@ -1,11 +1,4 @@
-import sys, re
-
-
-# check to make sure only 1 arg has been entered
-def argument_check(arguments):
-    if len(arguments) != 2:
-        system_exit()
-
+import sys, re, typer
 
 # check to ensure that either a 32-bit bin instr or 8-bit hex instr has been entered
 # will return binary instruction.
@@ -31,7 +24,8 @@ def instruction_check(instruction):
         instruction = str(bin(instruction))[2:].zfill(32)
         return instruction
     else:
-        return system_exit()
+        print("You did not enter a valid 32-bit binary or 8-bit hex instructon.")
+        raise typer.Exit(code=1)
 
 # function for exiting system
 # accepts additional lines if necessary
