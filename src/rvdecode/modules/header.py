@@ -1,6 +1,6 @@
 import json
 
-from rvdecode.modules.helper import errorcheck as errorcheck
+from src.rvdecode.modules import errorcheck as errorcheck
 
 
 def lookup_instruction(instruction_type, lookup_value):

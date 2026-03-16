@@ -1,6 +1,0 @@
-{
-  "1101111": {
-    "short_name": "jal",
-    "full_name": "jump and link",
-    "source": "RV32I"}
-}
