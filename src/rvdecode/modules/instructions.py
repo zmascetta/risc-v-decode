@@ -1,4 +1,4 @@
-from src.rvdecode.modules import header as header, decode, convert as convert
+from . import header, decode, convert
 import typer
 
 '''
@@ -107,6 +107,7 @@ def decode_regular_i_type(instruction, opcode, func3):
 
     return decoded_instruction
 
+
 '''
 I-Instruction (Shift):
 Separate i-instruction function to handle the shift immediate instructions.
@@ -207,7 +208,7 @@ def decode_s_type(instruction, opcode):
 B-Instruction
  Components: Opcode, Func3, Func7, RS1, RS2, Imm
 '''
-def decode_instruction(instruction, opcode):
+def decode_b_type(instruction, opcode):
     func3 = decode.get_func3(instruction)
     lookup_value = opcode+func3
     spacing_list = (7, 5, 5, 3, 5, 7)
@@ -261,7 +262,6 @@ def decode_instruction(instruction, opcode):
 U-Instruction:
 Components: Opcode, RD, Immediate
 '''
-
 def decode_u_type(instruction, opcode):
     lookup_value = opcode
     spacing_list = (20, 5, 7)
