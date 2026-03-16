@@ -1,4 +1,4 @@
-from rvdecode.modules.helper import errorcheck
+import typer
 
 # opcode
 def get_opcode(instruction):
@@ -18,8 +18,8 @@ def get_instruction_type(opcode):
     try:
         instruction_type = instruction_list[opcode]
     except KeyError:
-        extra_lines = "ERROR: Opcode in instruction is not valid."
-        errorcheck.system_exit(extra_lines)
+        print("ERROR: Instruction opcode is not valid.")
+        raise typer.Exit(code=1)
     else:
         return instruction_type
 
@@ -34,8 +34,8 @@ def get_rs2(instruction):
 def get_rd(instruction):
     rd = instruction[20:25]
     if rd == "00000":
-        extra_lines = "ERROR: Attempt to write to x0."
-        errorcheck.system_exit(extra_lines)
+        print("ERROR: Attempt to write to x0.")
+        raise typer.Exit(code=1)
 
     return rd
 
