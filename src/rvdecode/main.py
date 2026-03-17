@@ -1,5 +1,5 @@
 import  typer
-from .modules import decode, errorcheck, instructions, output
+from modules import decode, errorcheck, instructions, output
 
 app = typer.Typer()
 
@@ -32,5 +32,4 @@ def main(instruction: str):
     output.output_instruction(decoded_instruction)
 
 if __name__ == "__main__":
-    app()
-
+    typer.run(main)

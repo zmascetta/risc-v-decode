@@ -1,3 +1,6 @@
+from rich import print
+from . import console
+
 HEADER_VALUES = {"rs1_info": "Source Register 1 (rs1)",
                     "rs2_info": "Source Register 2 (rs2)",
                     "rd_info": "Destination Register (rd)",
@@ -41,9 +44,9 @@ def print_spaced_instruction(instruction, spacing_list):
     print("\n")
 
 def print_header(header_info):
-    print(
-        f'''{header_info["full_name"].title()} ({header_info["short_name"]})
-{header_info["instruction"]}
+    console.console.print(
+        f'''[b][u]{header_info["full_name"].title()} ({header_info["short_name"]})[/b][/u]
+[not b]{header_info["instruction"]}[/not b]
 {header_info["instruction_hex"]}
     \n{header_info["spacing_label"]}''',end="")
     print_spaced_instruction(header_info["instruction"], header_info["spacing_list"])
@@ -55,7 +58,7 @@ def print_data(data):
     print()
 
 def print_data_header(data):
-    print(HEADER_VALUES[data])
+    print(f"[b]{HEADER_VALUES[data]}[/b]")
 
 
 def output_instruction(decoded_instruction):
@@ -71,13 +74,4 @@ def output_instruction(decoded_instruction):
         print_data(decoded_instruction[data])
 
     # print assembly
-    print(f"Assembly Code\n{assembly_text}")
-
-def print_help():
-    print('''
-    rvdecode [INSTRUCTION]
-
-    Instruction can be binary or hex. It can also contain spaces if it is enclosed by quotes.
-    ''')
-
-    return exit(0)
+    print(f"[b]Assembly Code[/b]\n{assembly_text}")

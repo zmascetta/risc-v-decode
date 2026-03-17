@@ -3,7 +3,7 @@ import json, typer
 
 
 def lookup_instruction(instruction_type, lookup_value):
-    path = Path.cwd() / "instruction_list.json"
+    path = Path.cwd() / "modules" / "instruction_list.json"
 
     with path.open(mode="r") as file:
         instruction_info = json.load(file)
