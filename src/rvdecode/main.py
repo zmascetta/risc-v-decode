@@ -1,10 +1,12 @@
 import typer
-from modules import decode, errorcheck, instructions, output
+from typing import Annotated
+from .modules import decode, errorcheck, instructions, output
 
 app = typer.Typer()
 
+
 @app.command()
-def main(instruction: str):
+def main(instruction: Annotated[str, typer.Argument(help="A valid 32-bit binary or hex instruction.")]):
     # check if valid bin/hex instruction entered
     instruction = errorcheck.instruction_check(instruction)
 
@@ -28,6 +30,3 @@ def main(instruction: str):
 
     # print output
     output.output_instruction(decoded_instruction)
-
-if __name__ == "__main__":
-    typer.run(main)
