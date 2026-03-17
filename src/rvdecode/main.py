@@ -1,18 +1,16 @@
-import  typer
+import typer
 from modules import decode, errorcheck, instructions, output
 
 app = typer.Typer()
 
 @app.command()
 def main(instruction: str):
-
     # check if valid bin/hex instruction entered
     instruction = errorcheck.instruction_check(instruction)
 
     # get opcode and instruction type.
     opcode = decode.get_opcode(instruction)
     instruction_type = decode.get_instruction_type(opcode)
-
 
     # decode instruction
     if instruction_type == "r-type":

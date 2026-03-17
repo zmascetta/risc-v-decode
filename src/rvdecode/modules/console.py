@@ -1,2 +1,2 @@
 from rich.console import Console
-console = Console(color_system="auto", highlight=False)
+console = Console(highlight=False)

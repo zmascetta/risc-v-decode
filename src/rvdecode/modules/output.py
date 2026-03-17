@@ -6,10 +6,10 @@ HEADER_VALUES = {"rs1_info": "Source Register 1 (rs1)",
                     "rd_info": "Destination Register (rd)",
                     "shamt_info": "Shift Amount",
                     "imm_info": "Immediate",
-                    "u_imm_instr_info": "Offset\nValue In Instruction",
+                    "u_imm_instr_info": "Value In Instruction",
                     "u_imm_final_info": "Final Value (Zero Extended)",
                     "off_info": "Offset",
-                    "off_instr_info": "Offset\nValue In Instruction",
+                    "off_instr_info": "Value In Instruction",
                     "off_final_info": "Final Value (Position Corrected And Zero Extended)",
                     "general_info": "General Information",
                     "assembly_info": "Assembly Code",
@@ -44,21 +44,28 @@ def print_spaced_instruction(instruction, spacing_list):
     print("\n")
 
 def print_header(header_info):
-    console.console.print(
+    print(
         f'''[b][u]{header_info["full_name"].title()} ({header_info["short_name"]})[/b][/u]
-[not b]{header_info["instruction"]}[/not b]
+{header_info["instruction"]}
 {header_info["instruction_hex"]}
-    \n{header_info["spacing_label"]}''',end="")
+    [b]\n{header_info["spacing_label"]}[/b]''',end="")
     print_spaced_instruction(header_info["instruction"], header_info["spacing_list"])
 
 def print_data(data):
     for label, value in data.items():
         value = str(value)
-        print(format_label(label) + ": " + value)
+        print(format_label(label) + ": ", end="")
+        console.console.print(value, style="cyan bold")
     print()
 
 def print_data_header(data):
-    print(f"[b]{HEADER_VALUES[data]}[/b]")
+    if data is "off_instr_info" or data is "u_imm_instr_info":
+        console.console.print("Offset", style="bold underline")
+        console.console.print(f"{HEADER_VALUES[data]}", style="bold")
+    elif data is "off_final_info" or data is "u_imm_final_info":
+        console.console.print(f"{HEADER_VALUES[data]}", style="bold")
+    else:
+        console.console.print(f"{HEADER_VALUES[data]}", style="bold underline")
 
 
 def output_instruction(decoded_instruction):
@@ -74,4 +81,5 @@ def output_instruction(decoded_instruction):
         print_data(decoded_instruction[data])
 
     # print assembly
-    print(f"[b]Assembly Code[/b]\n{assembly_text}")
+    console.console.print("Assembly Code", style="bold underline")
+    console.console.print(assembly_text)
