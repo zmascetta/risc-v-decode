@@ -1,7 +1,7 @@
 [project]
 name = "rvdecode"
 version = "0.1.0"
-description = "A tool for "
+description = "A tool for decoding RISC-V instructions."
 readme = "README.md"
 authors = [
     { name = "Zach Mascetta", email = "zmascetta@protonmail.com" }
