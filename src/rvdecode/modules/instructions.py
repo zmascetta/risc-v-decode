@@ -51,9 +51,10 @@ Decides whether instruction is regular or shift i-type
 '''
 def decode_i_type(instruction, opcode):
     func3 = decode.get_func3(instruction)
-    shift_instruction_list = ("001", "101")
+    shift_instruction_list_opcode = ("0010011", "0011011")
+    shift_instruction_list_func3 = ("001", "101")
 
-    if opcode == "0010011" and func3 in shift_instruction_list:
+    if opcode in shift_instruction_list_opcode and func3 in shift_instruction_list_func3:
         decoded_instruction = decode_shift_i_type(instruction, opcode, func3)
     else:
         decoded_instruction = decode_regular_i_type(instruction, opcode, func3)
