@@ -48,7 +48,47 @@
     "01100111110000000": {
       "short_name":  "and",
       "full_name": "AND",
-      "source": "RV32I"}
+      "source": "RV32I"},
+
+    "01100110000000001": {
+      "short_name": "mul",
+      "full_name": "multiply",
+      "source": "RV32M"},
+
+    "01100110010000001": {
+      "short_name": "mulh",
+      "full_name": "multiply high",
+      "source": "RV32M"},
+
+    "01100110100000001": {
+      "short_name": "mulhsu",
+      "full_name": "multiply high signed unsigned",
+      "source": "RV32M"},
+
+    "01100110110000001": {
+      "short_name": "mulhu",
+      "full_name": "multiply high unsigned",
+      "source": "RV32M"},
+
+    "01100111000000001": {
+      "short_name": "div",
+      "full_name": "divide",
+      "source": "RV32M"},
+
+    "01100111010000001": {
+      "short_name": "divu",
+      "full_name": "divide unsigned",
+      "source": "RV32M"},
+
+    "01100111100000001": {
+      "short_name": "rem",
+      "full_name": "remainder",
+      "source": "RV32M"},
+
+    "01100111110000001": {
+      "short_name": "remu",
+      "full_name": "remainder unsigned",
+      "source": "RV32M"}
   },
 
   "i-type": {
