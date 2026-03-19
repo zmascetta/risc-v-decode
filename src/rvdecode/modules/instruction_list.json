@@ -118,27 +118,27 @@
     "01110110000000001": {
       "short_name": "mulw",
       "full_name": "multiply word",
-      "source": "RV64I"},
+      "source": "RV64M"},
 
     "01110111000000001": {
       "short_name": "divw",
       "full_name": "divide word",
-      "source": "RV64I"},
+      "source": "RV64M"},
 
     "01110111010000001": {
       "short_name": "divuw",
       "full_name": "divide word, unsigned",
-      "source": "RV64I"},
+      "source": "RV64M"},
 
     "01110111100000001": {
       "short_name": "remw",
       "full_name": "remainder word",
-      "source": "RV64I"},
+      "source": "RV64M"},
 
     "01110111110000001": {
       "short_name": "remuw",
       "full_name": "remainder word, unsigned",
-      "source": "RV64I"}
+      "source": "RV64M"}
   },
 
   "i-type": {
