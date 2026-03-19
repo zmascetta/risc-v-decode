@@ -1,0 +1,19 @@
+[project]
+name = "rvdecode"
+version = "0.1.0"
+description = "A tool for decoding RISC-V instructions."
+readme = "README.md"
+authors = [
+    { name = "Zach Mascetta", email = "zmascetta.1mdxa@passmail.net" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "typer==0.24.1",
+]
+
+[project.scripts]
+rvdecode = "rvdecode.main:app"
+
+[build-system]
+requires = ["uv_build>=0.10.11,<0.11.0"]
+build-backend = "uv_build"
