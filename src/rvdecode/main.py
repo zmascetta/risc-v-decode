@@ -6,7 +6,7 @@ app = typer.Typer()
 
 
 @app.command()
-def main(instruction: Annotated[str, typer.Argument(help="A valid 32-bit binary or 8-bit hex instruction.")],
+def main(instruction: Annotated[str, typer.Argument(help="A valid 32-bit binary or 6-bit hex instruction.")],
          rv64: Annotated[
              bool,
              typer.Option(
