@@ -9,11 +9,14 @@ def get_instruction_type(opcode):
     instruction_list = {"1101111": "j-type",
                         "1100011": "b-type",
                         "0110011": "r-type",
+                        "0111011": "r-type",
                         "0100011": "s-type",
                         "0110111": "u-type",
                         "0010111": "u-type",
                         "0000011": "i-type",
-                        "0010011": "i-type"}
+                        "0010011": "i-type",
+                        "1100111": "i-type",
+                        "0011011": "i-type"}
 
     try:
         instruction_type = instruction_list[opcode]

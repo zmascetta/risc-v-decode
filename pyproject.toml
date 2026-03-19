@@ -1,6 +1,6 @@
 [project]
 name = "rvdecode"
-version = "0.1.0"
+version = "0.2.0"
 description = "A tool for decoding RISC-V instructions."
 readme = "README.md"
 authors = [

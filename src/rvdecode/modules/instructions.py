@@ -49,12 +49,13 @@ def decode_r_type(instruction, opcode):
 Decode I-Instruction
 Decides whether instruction is regular or shift i-type
 '''
-def decode_i_type(instruction, opcode):
+def decode_i_type(instruction, opcode, rv64):
     func3 = decode.get_func3(instruction)
-    shift_instruction_list = ("001", "101")
+    shift_instruction_list_opcode = ("0010011", "0011011")
+    shift_instruction_list_func3 = ("001", "101")
 
-    if opcode == "0010011" and func3 in shift_instruction_list:
-        decoded_instruction = decode_shift_i_type(instruction, opcode, func3)
+    if opcode in shift_instruction_list_opcode and func3 in shift_instruction_list_func3:
+        decoded_instruction = decode_shift_i_type(instruction, opcode, func3, rv64)
     else:
         decoded_instruction = decode_regular_i_type(instruction, opcode, func3)
 
@@ -113,11 +114,20 @@ I-Instruction (Shift):
 Separate i-instruction function to handle the shift immediate instructions.
 Components: Opcode, Func3, Func7, RS1, RD, SHAMT (5-digit)
 '''
-def decode_shift_i_type(instruction, opcode, func3):
-    func7 = decode.get_func7(instruction)
+def decode_shift_i_type(instruction, opcode, func3, rv64):
+    if rv64:
+        func7 = instruction[0:6]
+        spacing_list = (6, 6, 5, 3, 5, 7)
+        spacing_label = "f7---| shamt| rs1-| f3| rd--| opcode|\n"
+    else:
+        if instruction[6] == "1":
+            print("You entered a shift instruction without indicating RV64 and the instruction is invalid in RV32I. Please run your command again using the \"--rv64\" option")
+            raise typer.Exit(code=1)
+        func7 = decode.get_func7(instruction)
+        spacing_list = (7, 5, 5, 3, 5, 7)
+        spacing_label = "f7----|shamt| rs1-| f3| rd--| opcode|\n"
+
     lookup_value = opcode + func3 + func7
-    spacing_list = (7, 5, 5, 3, 5, 7)
-    spacing_label = "f7----|shamt| rs1-| f3| rd--| opcode|\n"
 
     # Create header dict.
     header_info = header.create_header_info(instruction, spacing_list, spacing_label, "i-type", lookup_value)
@@ -136,11 +146,14 @@ def decode_shift_i_type(instruction, opcode, func3):
     rd_info = convert.register_conversion(decode.get_rd(instruction))
 
     # Create shamt dict.
-    # SHAMT[5] always equals 0
-    shamt = instruction[7:12]
-    if shamt[0] == 1:
-        print("Invalid shift amount. Your instruction is not valid.")
-        raise typer.Exit(code=1)
+    # SHAMT[5] always equals 0 in RV32
+    if rv64:
+        shamt = instruction[6:12]
+    else:
+        shamt = instruction[7:12]
+        if shamt[0] == 1:
+            print("Invalid shift amount. Your instruction is not valid.")
+            raise typer.Exit(code=1)
 
     shamt_info = {"binary": shamt}
     shamt_info.update(convert.unsigned_conversion(shamt))
@@ -150,12 +163,15 @@ def decode_shift_i_type(instruction, opcode, func3):
 
     # Add all dicts to decoded instruction dict
     decoded_instruction = {"header_info": header_info,
-                            "general_info": general_info,
+                           "general_info": general_info,
                            "rs1_info": rs1_info,
                            "rd_info": rd_info,
                            "shamt_info": shamt_info,
                            "assembly_info": assembly_text}
 
+    shift_list = ("slli", "srli", "srai")
+    if header_info["short_name"] in shift_list and not rv64:
+        print("NOTE: You entered a shift command without indicating its origin. By default, the RV32I result is displayed below. If your instruction came from RV64I, please rerun with the \"--rv64\" option\n")
     return decoded_instruction
 
 

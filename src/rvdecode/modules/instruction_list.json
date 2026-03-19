@@ -3,114 +3,204 @@
     "01100110000000000": {
       "short_name":  "add",
       "full_name": "add",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "01100110000100000": {
       "short_name":  "sub",
       "full_name": "subtract",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "01100110010000000": {
       "short_name":  "sll",
       "full_name": "shift left logical",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "01100110100000000": {
       "short_name":  "slt",
       "full_name": "set if less than",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "01100110110000000": {
       "short_name":  "sltu",
       "full_name": "set if less than, unsigned",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "01100111000000000": {
       "short_name":  "xor",
       "full_name": "exclusive-OR",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "01100111010000000": {
       "short_name":  "srl",
       "full_name": "shift right logical",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "01100111010100000": {
       "short_name":  "sra",
       "full_name": "shift right arithmetic",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "01100111100000000": {
       "short_name":  "or",
       "full_name": "OR",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "01100111110000000": {
       "short_name":  "and",
       "full_name": "AND",
-      "source": "RV32I"}
+      "source": "RV32I/RV64I"},
+
+    "01100110000000001": {
+      "short_name": "mul",
+      "full_name": "multiply",
+      "source": "RV32M/RV64M"},
+
+    "01100110010000001": {
+      "short_name": "mulh",
+      "full_name": "multiply high",
+      "source": "RV32M/RV64M"},
+
+    "01100110100000001": {
+      "short_name": "mulhsu",
+      "full_name": "multiply high signed-unsigned",
+      "source": "RV32M/RV64M"},
+
+    "01100110110000001": {
+      "short_name": "mulhu",
+      "full_name": "multiply high unsigned",
+      "source": "RV32M/RV64M"},
+
+    "01100111000000001": {
+      "short_name": "div",
+      "full_name": "divide",
+      "source": "RV32M/RV64M"},
+
+    "01100111010000001": {
+      "short_name": "divu",
+      "full_name": "divide unsigned",
+      "source": "RV32M/RV64M"},
+
+    "01100111100000001": {
+      "short_name": "rem",
+      "full_name": "remainder",
+      "source": "RV32M/RV64M"},
+
+    "01100111110000001": {
+      "short_name": "remu",
+      "full_name": "remainder unsigned",
+      "source": "RV32M/RV64M"},
+
+    "01110110000000000": {
+      "short_name": "addw",
+      "full_name": "add word",
+      "source": "RV64I"},
+
+    "01110110000100000": {
+      "short_name": "subw",
+      "full_name": "subtract word",
+      "source": "RV64I"},
+
+    "01110110010000000": {
+      "short_name": "sllw",
+      "full_name": "shift left logical word",
+      "source": "RV64I"},
+
+    "01110111010000000": {
+      "short_name": "srlw",
+      "full_name": "shift right logial word",
+      "source": "RV64I"},
+
+    "01110111010100000": {
+      "short_name": "sraw",
+      "full_name": "shift right arithmetic word",
+      "source": "RV64I"},
+
+    "01110110000000001": {
+      "short_name": "mulw",
+      "full_name": "multiply word",
+      "source": "RV64M"},
+
+    "01110111000000001": {
+      "short_name": "divw",
+      "full_name": "divide word",
+      "source": "RV64M"},
+
+    "01110111010000001": {
+      "short_name": "divuw",
+      "full_name": "divide word, unsigned",
+      "source": "RV64M"},
+
+    "01110111100000001": {
+      "short_name": "remw",
+      "full_name": "remainder word",
+      "source": "RV64M"},
+
+    "01110111110000001": {
+      "short_name": "remuw",
+      "full_name": "remainder word, unsigned",
+      "source": "RV64M"}
   },
 
   "i-type": {
     "1100111000": {
       "short_name":  "jalr",
       "full_name": "jump and link register",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0000011000": {
       "short_name":  "lb",
       "full_name": "load byte",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0000011001": {
       "short_name":  "lh",
       "full_name": "load halfword",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0000011010": {
       "short_name":  "lw",
       "full_name": "load word",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0000011100": {
       "short_name":  "lbu",
       "full_name": "load byte, unsigned",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0000011101": {
       "short_name":  "lhu",
       "full_name": "load halfword, unsigned",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0010011000": {
       "short_name":  "addi",
       "full_name": "add immediate",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0010011010": {
       "short_name":  "slti",
       "full_name": "set if less than immediate",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0010011011": {
       "short_name":  "sltiu",
       "full_name": "set if less than immediate, unsigned",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0010011100": {
       "short_name":  "xori",
       "full_name": "exclusive-OR immediate",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0010011110": {
       "short_name":  "ori",
       "full_name": "OR immediate",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0010011111": {
       "short_name":  "andi",
       "full_name": "AND immediate",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "00100110010000000": {
       "short_name":  "slli",
@@ -125,74 +215,124 @@
     "00100111010100000": {
       "short_name":  "srai",
       "full_name": "shift right arithmetic immediate",
-      "source": "RV32I"}
+      "source": "RV32I"},
+
+    "0000011110": {
+      "short_name": "lwu",
+      "full_name": "load word unsigned",
+      "source": "RV64I"},
+
+    "0000011011": {
+      "short_name": "ld",
+      "full_name": "load doubleword",
+      "source": "RV64I"},
+
+    "0010011001000000": {
+      "short_name": "slli",
+      "full_name": "shift left logical immediate",
+      "source": "RV64I"},
+
+    "0010011101000000": {
+      "short_name": "srli",
+      "full_name": "shift right logical immediate",
+      "source": "RV64I"},
+
+    "0010011101001000": {
+      "short_name": "srai",
+      "full_name": "shift right arithmetic immediate",
+      "source": "RV64I"},
+
+    "0011011000": {
+      "short_name": "addiw",
+      "full_name": "add immediate word",
+      "source": "RV64I"},
+
+    "00110110010000000": {
+      "short_name": "slliw",
+      "full_name": "shift left logical word immediate",
+      "source": "RV64I"},
+
+    "00110111010000000": {
+      "short_name": "srliw",
+      "full_name": "shift right logical word immediate",
+      "source": "RV64I"},
+
+    "00110111010100000": {
+      "short_name": "sraiw",
+      "full_name": "shift right arithmetic word immediate",
+      "source": "RV64I"}
   },
 
   "s-type": {
     "0100011000": {
       "short_name":  "sb",
       "full_name": "store byte",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0100011001": {
       "short_name":  "sh",
       "full_name": "store halfword",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0100011010": {
       "short_name":  "sw",
       "full_name": "store word",
-      "source": "RV32I"}
+      "source": "RV32I/RV64I"},
+
+    "0100011011": {
+      "short_name": "sd",
+      "full_name": "store doubleword",
+      "source": "RV64I"}
   },
 
   "b-type": {
     "1100011000": {
       "short_name":  "beq",
       "full_name": "branch if equal",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "1100011001": {
       "short_name":  "bne",
       "full_name": "branch if not equal",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "1100011100": {
       "short_name":  "blt",
       "full_name": "branch if less than",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "1100011101": {
       "short_name":  "bge",
       "full_name": "branch if greater than or equal",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "1100011110": {
       "short_name":  "bltu",
       "full_name": "branch if less than, unsigned",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "1100011111": {
       "short_name":  "bgeu",
       "full_name": "branch if greater than or equal, unsigned",
-      "source": "RV32I"}
+      "source": "RV32I/RV64I"}
   },
 
   "u-type" : {
     "0110111": {
       "short_name":  "lui",
       "full_name": "load upper immediate",
-      "source": "RV32I"},
+      "source": "RV32I/RV64I"},
 
     "0010111": {
       "short_name":  "auipc",
       "full_name": "add upper immediate to pc",
-      "source": "RV32I"}
+      "source": "RV32I/RV64I"}
   },
 
   "j-type": {
     "1101111": {
       "short_name": "jal",
       "full_name": "jump and link",
-      "source": "RV32I"}
+      "source": "RV32I/RV64I"}
   }
 }
