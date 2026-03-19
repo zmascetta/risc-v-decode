@@ -205,17 +205,17 @@
     "00100110010000000": {
       "short_name":  "slli",
       "full_name": "shift left logical immediate",
-      "source": "RV32I/RV64I"},
+      "source": "RV32I"},
 
     "00100111010000000": {
       "short_name":  "srli",
       "full_name": "shift right logical immediate",
-      "source": "RV32I/RV64I"},
+      "source": "RV32I"},
 
     "00100111010100000": {
       "short_name":  "srai",
       "full_name": "shift right arithmetic immediate",
-      "source": "RV32I/RV64I"},
+      "source": "RV32I"},
 
     "0000011110": {
       "short_name": "lwu",
@@ -227,17 +227,17 @@
       "full_name": "load doubleword",
       "source": "RV64I"},
 
-    "00100110010000000": {
+    "0010011001000000": {
       "short_name": "slli",
       "full_name": "shift left logical immediate",
       "source": "RV64I"},
 
-    "00100111010000000": {
+    "0010011101000000": {
       "short_name": "srli",
       "full_name": "shift right logical immediate",
       "source": "RV64I"},
 
-    "00100111010010000": {
+    "0010011101001000": {
       "short_name": "srai",
       "full_name": "shift right arithmetic immediate",
       "source": "RV64I"},

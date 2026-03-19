@@ -6,7 +6,14 @@ app = typer.Typer()
 
 
 @app.command()
-def main(instruction: Annotated[str, typer.Argument(help="A valid 32-bit binary or hex instruction.")]):
+def main(instruction: Annotated[str, typer.Argument(help="A valid 32-bit binary or hex instruction.")],
+         rv64: Annotated[
+             bool,
+             typer.Option(
+                 help="Only used with slli, srli, or srai instruction."
+             ),
+         ] = False,
+         ):
     # check if valid bin/hex instruction entered
     instruction = errorcheck.instruction_check(instruction)
 
@@ -18,7 +25,7 @@ def main(instruction: Annotated[str, typer.Argument(help="A valid 32-bit binary 
     if instruction_type == "r-type":
         decoded_instruction = instructions.decode_r_type(instruction, opcode)
     elif instruction_type == "i-type":
-        decoded_instruction = instructions.decode_i_type(instruction, opcode)
+        decoded_instruction = instructions.decode_i_type(instruction, opcode, rv64)
     elif instruction_type == "s-type":
         decoded_instruction = instructions.decode_s_type(instruction, opcode)
     elif instruction_type == "b-type":
