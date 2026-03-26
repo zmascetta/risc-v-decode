@@ -23,7 +23,11 @@ It was created using Typer and has the necessary components to build using `uv`.
   
 ## Example Output
 
+    Any of the inputs below will produce the following output:
     rvdecode "0000 0000 0101 1110 0000 1110 0011 0011"
+    rvdeocde 00000000010111100000111000110011
+    rvdecode 0x5e0e33
+    rvdecode 5e0e33
 
     Add (add)
     00000000010111100000111000110011
