@@ -1,6 +1,6 @@
 import re, typer
 
-# check to ensure that either a 32-bit bin instr or 8-bit hex instr has been entered
+# check to ensure that either a 32-bit bin instr or 6-bit hex instr has been entered
 # will return binary instruction.
 def instruction_check(instruction):
     # clear any spaces if passed in with quotes/remove 0x is present
