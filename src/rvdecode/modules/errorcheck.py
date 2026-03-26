@@ -11,7 +11,7 @@ def instruction_check(instruction):
         r"^[0,1]{32}$",
         instruction)
 
-    # check for 8-bit hex instruction
+    # check for 6-bit hex instruction
     hex_check = re.search(
         r"^[0-9a-fA-F]{6}$",
         instruction)
