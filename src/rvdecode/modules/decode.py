@@ -36,9 +36,13 @@ def get_rs2(instruction):
 
 def get_rd(instruction):
     rd = instruction[20:25]
+
     if rd == "00000":
-        print("ERROR: Attempt to write to x0.")
-        raise typer.Exit(code=1)
+        if instruction[-7:] == "1100111":
+            return rd
+        else:
+            print("ERROR: Attempt to write to x0.")
+            raise typer.Exit(code=1)
 
     return rd
 

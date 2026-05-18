@@ -1,12 +1,12 @@
 import typer
 from typing import Annotated
-from .modules import decode, errorcheck, instructions, output
+from rvdecode.modules import decode, errorcheck, instructions, output
 
 app = typer.Typer()
 
 
 @app.command()
-def main(instruction: Annotated[str, typer.Argument(help="A valid 32-bit binary or 6-bit hex instruction.")],
+def main(instruction: Annotated[str, typer.Argument(help="A valid 32-bit binary instruction or hex instruction.")],
          rv64: Annotated[
              bool,
              typer.Option(
