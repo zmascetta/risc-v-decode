@@ -206,8 +206,10 @@ def decode_s_type(instruction, opcode):
     off_info = {"binary": offset}
     off_info.update(convert.signed_conversion(offset))
 
+    offset_value = off_info["hex"] + "(" + rs1_info["alias"] + ")"
+
     # Create assembly text
-    assembly_text = decode.make_assembly_code(header_info["short_name"], rs1=rs1_info["alias"], rs2=rs2_info["alias"], imm=off_info["decimal"])
+    assembly_text = decode.make_assembly_code(header_info["short_name"],  rs2=rs2_info["alias"],  imm=offset_value)
 
     # Add all dicts to decoded instruction dict
     decoded_instruction = {"header_info": header_info,
