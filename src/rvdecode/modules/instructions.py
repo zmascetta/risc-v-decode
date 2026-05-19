@@ -267,8 +267,8 @@ def decode_b_type(instruction, opcode):
                            "general_info": general_info,
                            "rs1_info": rs1_info,
                            "rs2_info": rs2_info,
-                           "off_instr_info": off_instr_info,
-                           "off_final_info": off_final_info,
+                           "b_off_instr_info": off_instr_info,
+                           "b_off_final_info": off_final_info,
                            "assembly_info": assembly_text}
 
     return decoded_instruction

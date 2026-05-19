@@ -62,8 +62,8 @@ def make_assembly_code(name, rd=None, rs1=None, rs2=None, shamt=None, imm=None):
     assembly_list = []
     for key, val in assembly_components.items():
         if val is not None:
-            if key in ("rs1", "rs2") and val == "x0":
-                assembly_list.append("0")
+            if key in ("rs1", "rs2") and val == "zero":
+                assembly_list.append("x0")
             else:
                 assembly_list.append(str(val))
 
