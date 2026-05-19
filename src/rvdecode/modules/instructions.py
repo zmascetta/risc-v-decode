@@ -259,16 +259,19 @@ def decode_b_type(instruction, opcode):
     else:
         off_final_info.update(convert.signed_conversion(final_value))
 
+    # Format to "offset(*)" for assembly
+    offset_value = off_final_info["hex"] + "(*)"
+
     # Create assembly text
-    assembly_text = decode.make_assembly_code(header_info["short_name"], rs1=rs1_info["alias"], rs2=rs2_info["alias"], imm=off_final_info["decimal"])
+    assembly_text = decode.make_assembly_code(header_info["short_name"], rs1=rs1_info["alias"], rs2=rs2_info["alias"], imm=offset_value)
 
     # Add all dicts to decoded instruction dict
     decoded_instruction = {"header_info": header_info,
                            "general_info": general_info,
                            "rs1_info": rs1_info,
                            "rs2_info": rs2_info,
-                           "b_off_instr_info": off_instr_info,
-                           "b_off_final_info": off_final_info,
+                           "off_instr_info": off_instr_info,
+                           "off_final_info": off_final_info,
                            "assembly_info": assembly_text}
 
     return decoded_instruction
@@ -343,10 +346,13 @@ def decode_j_type(instruction, opcode):
 
     immediate = instruction[0] + instruction[12:20] + instruction[11] + instruction[1:11] + "0"
     off_final_info = {"binary": immediate}
-    off_final_info.update(convert.unsigned_conversion(immediate))
+    off_final_info.update(convert.signed_conversion(immediate))
+
+    # Format to "offset(*)" for assembly
+    offset_value = off_final_info["hex"] + "(*)"
 
     # Create assembly text
-    assembly_text = decode.make_assembly_code(header_info["short_name"], rd=rd_info["alias"], imm=off_final_info["hex"])
+    assembly_text = decode.make_assembly_code(header_info["short_name"], rd=rd_info["alias"], imm=offset_value)
 
     # Add all dicts to decoded instruction dict
     decoded_instruction = {"header_info": header_info,
