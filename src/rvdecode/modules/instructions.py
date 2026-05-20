@@ -53,8 +53,11 @@ def decode_i_type(instruction, opcode, rv64):
     func3 = decode.get_func3(instruction)
     shift_instruction_list_opcode = ("0010011", "0011011")
     shift_instruction_list_func3 = ("001", "101")
+    offset_instruction_list_opcode = ("1100111", "0000011")
 
-    if opcode in shift_instruction_list_opcode and func3 in shift_instruction_list_func3:
+    if opcode in offset_instruction_list_opcode:
+        decoded_instruction = decode_offset_i_type(instruction, opcode, func3)
+    elif opcode in shift_instruction_list_opcode and func3 in shift_instruction_list_func3:
         decoded_instruction = decode_shift_i_type(instruction, opcode, func3, rv64)
     else:
         decoded_instruction = decode_regular_i_type(instruction, opcode, func3)
@@ -65,7 +68,7 @@ def decode_i_type(instruction, opcode, rv64):
 I-Instruction
 Handles the signed/unsigned NON-SHIFT i-instructions.
 Components: Opcode, Func3, RS1, RD, Immediate (12-digit, signed/unsigned)
-Unsigned instructions: sltiu, sltu, lbu, lhu
+Unsigned instructions: sltiu, sltu
 '''
 def decode_regular_i_type(instruction, opcode, func3):
     lookup_value = opcode + func3
@@ -90,7 +93,7 @@ def decode_regular_i_type(instruction, opcode, func3):
     # Create imm. dict.
     immediate = instruction[0:12]
     imm_info = {"binary": immediate}
-    if header_info["short_name"] in ("sltiu", "sltu", "lbu", "lhu"):
+    if header_info["short_name"] in ("sltiu", "sltu"):
         imm_info.update(convert.unsigned_conversion(immediate))
     else:
         imm_info.update(convert.signed_conversion(immediate))
@@ -174,6 +177,54 @@ def decode_shift_i_type(instruction, opcode, func3, rv64):
         print("NOTE: You entered a shift command without indicating its origin. By default, the RV32I result is displayed below. If your instruction came from RV64I, please rerun with the \"--rv64\" option\n")
     return decoded_instruction
 
+'''
+I-Instruction (offset):
+Separate i-instruction function to jalr and load instructions.
+Components: Opcode, Func3, RS1, RD, Offset (12-digit, signed/unsigned)
+'''
+def decode_offset_i_type(instruction, opcode, func3):
+    lookup_value = opcode + func3
+    spacing_list = (12, 5, 3, 5, 7)
+    spacing_label = "off--------| rs1-| f3| rd--| opcode|\n"
+
+    # Create header dict.
+    header_info = header.create_header_info(instruction, spacing_list, spacing_label, "i-type", lookup_value)
+
+    # Create general info dict.
+    general_info = {"instruction_type": "I-Type",
+                    "source": header_info["source"],
+                    "opcode": opcode,
+                    "func3": func3}
+
+    # Create rs1 dict.
+    rs1_info = convert.register_conversion(decode.get_rs1(instruction))
+
+    # Create rd dict.
+    rd_info = convert.register_conversion(decode.get_rd(instruction))
+
+    # Create off. dict.
+    offset = instruction[0:12]
+    off_info = {"binary": offset}
+    if header_info["short_name"] in ("lbu", "lhu"):
+        off_info.update(convert.unsigned_conversion(offset))
+    else:
+        off_info.update(convert.signed_conversion(offset))
+
+    # format to "offset(rs1)" for assembly
+    offset_value = off_info["hex"] + "(" + rs1_info["alias"] + ")"
+
+    # Create assembly text
+    assembly_text = decode.make_assembly_code(header_info["short_name"], rd=rd_info["alias"], imm=offset_value)
+
+    # Add all dicts to decoded instruction dict
+    decoded_instruction = {"header_info": header_info,
+                            "general_info": general_info,
+                            "rs1_info": rs1_info,
+                            "rd_info": rd_info,
+                            "off_info": off_info,
+                            "assembly_info": assembly_text}
+
+    return decoded_instruction
 
 
 '''
@@ -206,6 +257,7 @@ def decode_s_type(instruction, opcode):
     off_info = {"binary": offset}
     off_info.update(convert.signed_conversion(offset))
 
+    # format to "offset(rs1)" for assembly
     offset_value = off_info["hex"] + "(" + rs1_info["alias"] + ")"
 
     # Create assembly text

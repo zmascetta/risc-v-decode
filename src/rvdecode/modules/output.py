@@ -59,10 +59,10 @@ def print_data(data):
     print()
 
 def print_data_header(data):
-    if data is "off_instr_info" or data is "u_imm_instr_info":
+    if data == "off_instr_info" or data == "u_imm_instr_info":
         console.console.print("Offset", style="bold underline")
         console.console.print(f"{HEADER_VALUES[data]}", style="bold")
-    elif data is "off_final_info" or data is "u_imm_final_info":
+    elif data == "off_final_info" or data == "u_imm_final_info":
         console.console.print(f"{HEADER_VALUES[data]}", style="bold")
     else:
         console.console.print(f"{HEADER_VALUES[data]}", style="bold underline")
