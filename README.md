@@ -5,13 +5,16 @@ A CLI program for decoding RISC-V instructions.
 ## Features  
  - Displays information for all registers used by instruction, including name, alias and use.
  - Displays immediate/offset values in binary, decimal, and hex.
- - Displays both "value in instruction" and final value for instructions whose immediate/offset require transformation(s) (repositioning bits, zero extending, etc.).
- - Outputs assembly code (with obvious limitations due to decompilation)
+ - Displays both "value in instruction" and final value for instructions whose immediate/offset require transformation(s) (repositioning bits, sign extending, etc.).
+ - Outputs assembly code (with limitations due to decompilation)
+   - The most obvious instance of this is the absence of labels in jump, branch, load, and store instructions.
+   - jump and branch instructions use "offset(*)"
+   - load and store instructions use "offset(register)"
  - Displays formatted instruction with labels for each component
  - Support for RV32I, RV64I, RV32M, and RV64M instructions (minus fence, ecall, ebreak, and CSR instructions)
   
 ## Background
-This is a tool I built while learning RISC-V Assembly Language to better understand the ISA and how instructions are created/formatted. There probably isn't too much practical, day-to-day use for this, but it proved a good learning aid. There were times when I wanted to check my work (especially when manually writing full binary instructions) or check how my code had compiled. This made it easier than having to manually extract the information from the instruction.
+This is a tool I built while learning RISC-V Assembly Language to better understand the ISA and how instructions are created/formatted. There probably isn't too much practical, day-to-day use for this, but it proved a good learning aid.
 
 It was created using Typer and has the necessary components to build using `uv`.
 

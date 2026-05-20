@@ -34,12 +34,16 @@ REGISTER_REFERENCE = {"0": {"alias": "zero", "use": "read-only (0)"},
 def register_conversion(register_value):
     # convert from bin to dec for lookup
     decimal_value = str(int(register_value, base=2))
+
     register_data = {"binary_value": register_value,
                         "decimal_value": decimal_value,
                         "name": "x" + decimal_value,
                         "alias": REGISTER_REFERENCE[decimal_value]["alias"],
                         "use": REGISTER_REFERENCE[decimal_value]["use"]
                      }
+
+    if decimal_value == "8":
+        register_data["note"] = "Register x8 is also referred to as s0"
     return register_data
 
 def twos_complement(value, size):

@@ -13,7 +13,7 @@ def instruction_check(instruction):
 
     # check for 6-bit hex instruction
     hex_check = re.search(
-        r"^[0-9a-fA-F]{6}$",
+        r"^[0-9a-fA-F]{1,8}$",
         instruction)
 
     # return binary instruction or end program if both checks have failed
@@ -24,5 +24,5 @@ def instruction_check(instruction):
         instruction = str(bin(instruction))[2:].zfill(32)
         return instruction
     else:
-        print("You did not enter a valid 32-bit binary or 6-bit hex instructon.")
+        print("You did not enter a valid 32-bit binary instruction or a valid hex instructon.")
         raise typer.Exit(code=1)

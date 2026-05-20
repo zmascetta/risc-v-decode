@@ -36,9 +36,13 @@ def get_rs2(instruction):
 
 def get_rd(instruction):
     rd = instruction[20:25]
+
     if rd == "00000":
-        print("ERROR: Attempt to write to x0.")
-        raise typer.Exit(code=1)
+        if instruction[-7:] == "1100111":
+            return rd
+        else:
+            print("ERROR: Attempt to write to x0.")
+            raise typer.Exit(code=1)
 
     return rd
 
@@ -58,8 +62,34 @@ def make_assembly_code(name, rd=None, rs1=None, rs2=None, shamt=None, imm=None):
     assembly_list = []
     for key, val in assembly_components.items():
         if val is not None:
-            if key in ("rs1", "rs2") and val == "x0":
-                assembly_list.append("0")
+            if key in ("rs1", "rs2", "rd") and val == "zero":
+                assembly_list.append("x0")
+            else:
+                assembly_list.append(str(val))
+
+    # add formatting
+    # do not add a comma if component is the first or the last component
+    length = len(assembly_list)
+    x = 0
+    assembly_text = ""
+    while x < length:
+        if x > 0 and x < length - 1:
+            assembly_text += assembly_list[x] + ", "
+        else:
+            assembly_text += assembly_list[x] + " "
+        x += 1
+
+    return assembly_text
+
+# Make assembly code text
+def make_assembly_code_offset(name, rd=None, rs1=None, rs2=None, off=None):
+    assembly_components = locals()
+
+    assembly_list = []
+    for key, val in assembly_components.items():
+        if val is not None:
+            if key in ("rs1", "rs2") and val == "zero":
+                assembly_list.append("x0")
             else:
                 assembly_list.append(str(val))
 

@@ -10,7 +10,7 @@ HEADER_VALUES = {"rs1_info": "Source Register 1 (rs1)",
                     "u_imm_final_info": "Final Value (Zero Extended)",
                     "off_info": "Offset",
                     "off_instr_info": "Value In Instruction",
-                    "off_final_info": "Final Value (Position Corrected And Zero Extended)",
+                    "off_final_info": "Final Value (Position Corrected And Sign Extended)",
                     "general_info": "General Information",
                     "assembly_info": "Assembly Code",
                  }
@@ -59,10 +59,10 @@ def print_data(data):
     print()
 
 def print_data_header(data):
-    if data is "off_instr_info" or data is "u_imm_instr_info":
+    if data == "off_instr_info" or data == "u_imm_instr_info":
         console.console.print("Offset", style="bold underline")
         console.console.print(f"{HEADER_VALUES[data]}", style="bold")
-    elif data is "off_final_info" or data is "u_imm_final_info":
+    elif data == "off_final_info" or data == "u_imm_final_info":
         console.console.print(f"{HEADER_VALUES[data]}", style="bold")
     else:
         console.console.print(f"{HEADER_VALUES[data]}", style="bold underline")
